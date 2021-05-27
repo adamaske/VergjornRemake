@@ -21,6 +21,7 @@ void APlayerUnit::BeginPlay()
 	Super::BeginPlay();
 	
 	PC = Cast<APlayerController>(GetController());
+	PC->bShowMouseCursor = true;
 }
 
 // Called every frame
@@ -89,6 +90,7 @@ void APlayerUnit::EndSelection() {
 		AWorker* worker = Cast<AWorker>(HitResult.GetActor());
 		if (!WorkersSelected.Contains(worker)) {
 			WorkersSelected.Add(worker);
+			UE_LOG(LogTemp, Log, TEXT("Added a worker to selection"))
 			return;
 		}
 	}
@@ -105,8 +107,22 @@ void APlayerUnit::Interact() {
 
 	if (HitResult.GetActor()->IsA(AStructure::StaticClass())) {
 		AStructure* structure = Cast<AStructure>(HitResult.GetActor());
+		UE_LOG(LogTemp, Log, TEXT("Hit structure"));
 		if (WorkersSelected.Num() > 0) {
 			structure->GetWorkers(WorkersSelected);
 		}
+	}
+	else {
+		if (WorkersSelected.Num() > 0) {
+			MoveWorkers(HitResult.Location);
+		}
+	}
+}
+
+void APlayerUnit::MoveWorkers(FVector loc)
+{
+	for (int i = 0; i < WorkersSelected.Num(); i++)
+	{
+		//Move workers to loc
 	}
 }

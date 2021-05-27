@@ -27,6 +27,10 @@ void AStructure::Tick(float DeltaTime)
 	
 	if (IAmWorking()) {
 		//Do working stuff
+		for (int i = 0; i < workers.Num(); i++)
+		{
+			workers[i]->MyState = AWorker::Working;
+		}
 	}
 }
 
@@ -44,6 +48,7 @@ bool AStructure::GetWorkers(TArray<AWorker*> units) {
 	{
 		if (!workers.Contains(units[i])) {
 			workers.Add(units[i]);
+			UE_LOG(LogTemp, Log, TEXT("Got a worker"));
 			//Say to worker you are taken
 		}
 	}

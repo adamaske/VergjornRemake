@@ -46,6 +46,6 @@ public:
 	void Interact();
 	//Workers
 	TArray<class AWorker*> WorkersSelected;
-
+	void MoveWorkers(FVector);
 
 };
