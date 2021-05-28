@@ -28,10 +28,23 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	FVector Destination;
-	
+	//My state infromation
 	enum WorkerState{Moving, Idle, Working};
 	WorkerState MyState;
 
+	//Structure and working
+	class AStructure* MyStructure;
 
+	void GetStructure(class AStructure*);
+
+	void RemoveStructure();
+
+	//Functionanlity
+	FVector Destination;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool bIsMoving;
+	void GetDestination(FVector);
+
+	void StopMoving();
+	class AAIController* AIController;
 };

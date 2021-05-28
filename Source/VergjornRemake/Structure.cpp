@@ -63,3 +63,11 @@ void AStructure::RemoveWorkers(TArray<AWorker*> units) {
 		}
 	}
 }
+
+void AStructure::TakeDamage(float damage)
+{
+	CurrentHealth -= damage;
+	if (CurrentHealth <= 0) {
+		bIsDead = true;
+	}
+}

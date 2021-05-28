@@ -13,5 +13,17 @@ UCLASS()
 class VERGJORNREMAKE_API AVergjornRemakeGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+public:
+
+	AVergjornRemakeGameModeBase();
+
+	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaSeconds) override;
 	
+	//Player
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<class APlayerUnit> Player;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TArray<class AStructure*> Structures;
 };

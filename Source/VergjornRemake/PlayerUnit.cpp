@@ -121,6 +121,7 @@ void APlayerUnit::Interact() {
 	else {
 		if (WorkersSelected.Num() > 0) {
 			MoveWorkers(HitResult.Location);
+			UE_LOG(LogTemp, Log, TEXT("Gave Workers movedestionation"));
 		}
 	}
 }
@@ -130,5 +131,6 @@ void APlayerUnit::MoveWorkers(FVector loc)
 	for (int i = 0; i < WorkersSelected.Num(); i++)
 	{
 		//Move workers to loc
+		WorkersSelected[i]->GetDestination(loc);
 	}
 }

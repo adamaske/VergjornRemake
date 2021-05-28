@@ -27,14 +27,23 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
 	FString StructureName{ "Structure" };
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
-		FString StructureDescription{ "Description" };
+	FString StructureDescription{ "Description" };
 
+	//Health
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
+	float CurrentHealth{ 100.f };
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
+	float MaxHealth{ 100.f };
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
+	bool bIsDead{ 0 };
+
+	void TakeDamage(float);
+
+	//Getting and remvoing workers
 	bool GetWorkers(TArray<class AWorker*>);
 	void RemoveWorkers(TArray<class AWorker*>);
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
 		TArray<class AWorker*> workers;
-
 	bool IAmWorking();
 };
