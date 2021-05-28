@@ -49,9 +49,9 @@ public:
 
 	bool bIsSelecting{ 0 };
 	void Interact();
-	//Workers
+	//WorkerUnits
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	TArray<class AWorker*> WorkersSelected;
-	void MoveWorkers(FVector);
+	TArray<class AWorkerUnit*> WorkersSelected;
+	void MoveWorkerUnits(FVector);
 
 };

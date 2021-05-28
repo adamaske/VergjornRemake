@@ -2,7 +2,7 @@
 
 
 #include "Structure.h"
-#include "Worker.h"
+#include "WorkerUnit.h"
 // Sets default values
 AStructure::AStructure()
 {
@@ -27,15 +27,15 @@ void AStructure::Tick(float DeltaTime)
 	
 	if (IAmWorking()) {
 		//Do working stuff
-		for (int i = 0; i < workers.Num(); i++)
+		for (int i = 0; i < WorkerUnits.Num(); i++)
 		{
-			workers[i]->MyState = AWorker::Working;
+			WorkerUnits[i]->MyState = AWorkerUnit::Working;
 		}
 	}
 }
 
 bool AStructure::IAmWorking() {
-	if (workers.Num() > 0) {
+	if (WorkerUnits.Num() > 0) {
 		return true;
 	}
 	else {
@@ -43,23 +43,23 @@ bool AStructure::IAmWorking() {
 	}
 }
 
-bool AStructure::GetWorkers(TArray<AWorker*> units) {
+bool AStructure::GetWorkerUnits(TArray<AWorkerUnit*> units) {
 	for (int i = 0; i < units.Num(); i++)
 	{
-		if (!workers.Contains(units[i])) {
-			workers.Add(units[i]);
-			UE_LOG(LogTemp, Log, TEXT("Got a worker"));
-			//Say to worker you are taken
+		if (!WorkerUnits.Contains(units[i])) {
+			WorkerUnits.Add(units[i]);
+			UE_LOG(LogTemp, Log, TEXT("Got a WorkerUnit"));
+			//Say to WorkerUnit you are taken
 		}
 	}
 	return true;
 }
 
-void AStructure::RemoveWorkers(TArray<AWorker*> units) {
+void AStructure::RemoveWorkerUnits(TArray<AWorkerUnit*> units) {
 	for (int i = 0; i < units.Num(); i++)
 	{
-		if (workers.Contains(units[i])) {
-			workers.RemoveSingle(units[i]);
+		if (WorkerUnits.Contains(units[i])) {
+			WorkerUnits.RemoveSingle(units[i]);
 		}
 	}
 }

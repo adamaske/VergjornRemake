@@ -40,10 +40,10 @@ public:
 
 	void TakeDamage(float);
 
-	//Getting and remvoing workers
-	bool GetWorkers(TArray<class AWorker*>);
-	void RemoveWorkers(TArray<class AWorker*>);
+	//Getting and remvoing WorkerUnits
+	bool GetWorkerUnits(TArray<class AWorkerUnit*>);
+	void RemoveWorkerUnits(TArray<class AWorkerUnit*>);
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
-		TArray<class AWorker*> workers;
+		TArray<class AWorkerUnit*> WorkerUnits;
 	bool IAmWorking();
 };

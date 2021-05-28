@@ -3,7 +3,7 @@
 
 #include "PlayerUnit.h"
 #include "Camera/CameraComponent.h"
-#include "Worker.h"
+#include "WorkerUnit.h"
 #include "Structure.h"
 // Sets default values
 APlayerUnit::APlayerUnit()
@@ -65,7 +65,7 @@ void APlayerUnit::MoveUp(float value)
 	MovementVector.Z = value;
 }
 
-void APlayerUnit::StartSelection() {
+void APlayerUnit::StartSelection() { 
 	OnStartSelection();
 	WorkersSelected.Empty();
 	FHitResult HitResult;
@@ -89,13 +89,13 @@ void APlayerUnit::EndSelection() {
 
 	EndSelectionLocation = HitResult.Location;
 	OnEndSelection();
-	//Check for worker or structure
+	//Check for WorkerUnit or structure
 	/*
-	if (HitResult.GetActor()->IsA(AWorker::StaticClass())) {
-		AWorker* worker = Cast<AWorker>(HitResult.GetActor());
-		if (!WorkersSelected.Contains(worker)) {
-			WorkersSelected.Add(worker);
-			UE_LOG(LogTemp, Log, TEXT("Added a worker to selection"))
+	if (HitResult.GetActor()->IsA(AWorkerUnit::StaticClass())) {
+		AWorkerUnit* WorkerUnit = Cast<AWorkerUnit>(HitResult.GetActor());
+		if (!WorkerUnitsSelected.Contains(WorkerUnit)) {
+			WorkerUnitsSelected.Add(WorkerUnit);
+			UE_LOG(LogTemp, Log, TEXT("Added a WorkerUnit to selection"))
 			return;
 		}
 	}
@@ -114,23 +114,24 @@ void APlayerUnit::Interact() {
 		AStructure* structure = Cast<AStructure>(HitResult.GetActor());
 		UE_LOG(LogTemp, Log, TEXT("Hit structure"));
 		if (WorkersSelected.Num() > 0) {
-			structure->GetWorkers(WorkersSelected);
+			structure->GetWorkerUnits(WorkersSelected);
 			WorkersSelected.Empty();
 		}
 	}
 	else {
 		if (WorkersSelected.Num() > 0) {
-			MoveWorkers(HitResult.Location);
-			UE_LOG(LogTemp, Log, TEXT("Gave Workers movedestionation"));
+			MoveWorkerUnits(HitResult.Location);
+			UE_LOG(LogTemp, Log, TEXT("Gave WorkerUnits movedestionation"));
 		}
 	}
 }
 
-void APlayerUnit::MoveWorkers(FVector loc)
+void APlayerUnit::MoveWorkerUnits(FVector loc)
 {
+	UE_LOG(LogTemp, Log, TEXT("Hit structure %s"), *loc.ToString());
 	for (int i = 0; i < WorkersSelected.Num(); i++)
 	{
-		//Move workers to loc
+		//Move WorkerUnits to loc
 		WorkersSelected[i]->GetDestination(loc);
 	}
 }

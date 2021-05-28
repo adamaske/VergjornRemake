@@ -3,25 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
-#include "Worker.generated.h"
+#include "GameFramework/Character.h"
+#include "WorkerUnit.generated.h"
 
 UCLASS()
-class VERGJORNREMAKE_API AWorker : public APawn
+class VERGJORNREMAKE_API AWorkerUnit : public ACharacter
 {
 	GENERATED_BODY()
-
 public:
 	// Sets default values for this pawn's properties
-	AWorker();
+	AWorkerUnit();
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* WorkerMesh;
+		UStaticMeshComponent* WorkerMesh;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -29,7 +28,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	//My state infromation
-	enum WorkerState{Moving, Idle, Working};
+	enum WorkerState { Moving, Idle, Working };
 	WorkerState MyState;
 
 	//Structure and working
@@ -42,11 +41,10 @@ public:
 	//Functionanlity
 	FVector Destination;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	bool bIsMoving;
+		bool bIsMoving;
 	void GetDestination(FVector);
 
 	void StopMoving();
 	class AAIController* AIController;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	class UCharacterMovementComponent* moveComp;
+
 };
