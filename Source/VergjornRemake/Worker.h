@@ -32,4 +32,6 @@ public:
 	
 	enum WorkerState{Moving, Idle, Working};
 	WorkerState MyState;
+
+
 };

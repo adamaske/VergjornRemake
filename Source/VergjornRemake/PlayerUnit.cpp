@@ -66,16 +66,20 @@ void APlayerUnit::MoveUp(float value)
 }
 
 void APlayerUnit::StartSelection() {
+	OnStartSelection();
+	WorkersSelected.Empty();
 	FHitResult HitResult;
 	PC->GetHitResultUnderCursor(ECC_Visibility, true, HitResult);
 
 	if (!HitResult.GetActor()) {
 		return;
 	}
-
+	
 	StartSelectionLocation = HitResult.Location;
 }
+
 void APlayerUnit::EndSelection() {
+	OnEndSelection();
 	FHitResult HitResult;
 	PC->GetHitResultUnderCursor(ECC_Visibility, true, HitResult);
 
@@ -84,8 +88,9 @@ void APlayerUnit::EndSelection() {
 	}
 
 	EndSelectionLocation = HitResult.Location;
-	
+	OnEndSelection();
 	//Check for worker or structure
+	/*
 	if (HitResult.GetActor()->IsA(AWorker::StaticClass())) {
 		AWorker* worker = Cast<AWorker>(HitResult.GetActor());
 		if (!WorkersSelected.Contains(worker)) {
@@ -94,7 +99,7 @@ void APlayerUnit::EndSelection() {
 			return;
 		}
 	}
-
+	*/
 }
 
 void APlayerUnit::Interact() {
@@ -110,6 +115,7 @@ void APlayerUnit::Interact() {
 		UE_LOG(LogTemp, Log, TEXT("Hit structure"));
 		if (WorkersSelected.Num() > 0) {
 			structure->GetWorkers(WorkersSelected);
+			WorkersSelected.Empty();
 		}
 	}
 	else {

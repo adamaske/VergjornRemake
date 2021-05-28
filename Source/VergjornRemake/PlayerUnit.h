@@ -40,11 +40,17 @@ public:
 	//Selection and Interaction
 	void StartSelection();
 	void EndSelection();
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnStartSelection();
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnEndSelection();
 	FVector StartSelectionLocation;
 	FVector EndSelectionLocation;
+
 	bool bIsSelecting{ 0 };
 	void Interact();
 	//Workers
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TArray<class AWorker*> WorkersSelected;
 	void MoveWorkers(FVector);
 
