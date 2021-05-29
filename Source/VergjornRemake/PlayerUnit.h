@@ -5,6 +5,23 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "PlayerUnit.generated.h"
+UENUM(BlueprintType)
+enum class ResourceType : uint8 {
+	GOLD UMETA(DisplayName = "GOLD"),
+	METAL = 1  UMETA(DisplayName = "METAL"),
+	WOOD = 2     UMETA(DisplayName = "WOOD"),
+	MYRMALM = 3		UMETA(DisplayName = "MYRMALM"),
+	FOOD = 4	UMETA(DisplayName = "FOOD"),
+	SHIP = 5	UMETA(DisplayName = "SHIP")
+};
+USTRUCT(BlueprintType)
+struct FResource
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(EditAnywhere, Category = Stuff)
+		ResourceType myType;
+};
 
 UCLASS()
 class VERGJORNREMAKE_API APlayerUnit : public APawn
@@ -53,5 +70,30 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TArray<class AWorkerUnit*> WorkersSelected;
 	void MoveWorkerUnits(FVector);
+	class AWorkerUnit* HoveredWorker;
+	UPROPERTY(BlueprintReadOnly)
+		bool bIsHovering;
+	//General
+	void CheckHover();
 
+	////Resources
+	//enum ResourceType{ Gold, Wood, Metal, Myrmalm};
+	//struct FConstructionCost;
+	void GetResources(FResource, float);
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
+		float GoldAmount = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
+		float WoodAmount{ 0 };
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
+		float MetalAmount{ 0 };
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
+		float MyrmalmAmount{ 0 };
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
+		float FoodAmount{ 0 };
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
+		float ShipAmount{ 0 };
+
+	class ABuildingManager* BuildingManager;
+	void GetBuildingManager(class ABuildingManager*);
+	
 };

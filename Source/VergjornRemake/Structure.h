@@ -4,8 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "PlayerUnit.h"
 #include "Structure.generated.h"
 
+class APlayerUnit;
+
+USTRUCT(BlueprintType)
+struct FConstructionCost
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(EditAnywhere, Category = Stuff)
+		FResource Type;
+	UPROPERTY(EditAnywhere, Category = Stuff)
+		float Amount{0};
+};
+enum ResrouceType;
 UCLASS()
 class VERGJORNREMAKE_API AStructure : public AActor
 {
@@ -15,7 +29,7 @@ public:
 	// Sets default values for this actor's properties
 	AStructure();
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class UStaticMeshComponent* MainMesh;
 protected:
 	// Called when the game starts or when spawned
@@ -29,6 +43,8 @@ public:
 	FString StructureName{ "Structure" };
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
 	FString StructureDescription{ "Description" };
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
+		float ConstructionCost{ 40.f };
 
 	//Health
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
@@ -46,4 +62,24 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
 		TArray<class AWorkerUnit*> WorkerUnits;
 	bool IAmWorking();
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
+		TArray<FConstructionCost> Rewards;
+	//Player refrence
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	class APlayerUnit* MyPlayer;
+	void GetPlayer(APlayerUnit*);
+	
+	//Resources
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
+	float ResourceAmountToGive{ 10 };
+	void MakeResource();
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float CurrentProgess{0};
+	
+
+	//Building
+	class ABuildingManager* BuildingManager;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Building")
+	TArray<FConstructionCost> Costs;
 };

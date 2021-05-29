@@ -2,6 +2,9 @@
 
 
 #include "PlayerUnit.h"
+
+#include <string>
+
 #include "Camera/CameraComponent.h"
 #include "WorkerUnit.h"
 #include "Structure.h"
@@ -22,6 +25,8 @@ void APlayerUnit::BeginPlay()
 	
 	PC = Cast<APlayerController>(GetController());
 	PC->bShowMouseCursor = true;
+	GoldAmount = 0;
+	GoldAmount += 1;
 }
 
 // Called every frame
@@ -29,7 +34,7 @@ void APlayerUnit::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-
+	CheckHover();
 	if (!MovementVector.IsNearlyZero()) {
 		FVector newLocation = GetActorLocation() + (MovementVector * CameraMovementSpeed * DeltaTime);
 
@@ -134,4 +139,56 @@ void APlayerUnit::MoveWorkerUnits(FVector loc)
 		//Move WorkerUnits to loc
 		WorkersSelected[i]->GetDestination(loc);
 	}
+}
+
+void APlayerUnit::CheckHover() {
+	FHitResult HitResult;
+	PC->GetHitResultUnderCursor(ECC_Visibility, true, HitResult);
+	if (!HitResult.GetActor()) {
+		bIsHovering = false;
+		return;
+	}
+	if (HitResult.GetActor()->IsA(AWorkerUnit::StaticClass())) {
+		AWorkerUnit* WorkerUnit = Cast<AWorkerUnit>(HitResult.GetActor());
+		HoveredWorker = WorkerUnit;
+		bIsHovering = false;
+	}
+	else if (HitResult.GetActor()->IsA(AStructure::StaticClass())) {
+		AStructure* structure = Cast<AStructure>(HitResult.GetActor());
+		//Display structure information
+		//bIsHovering = false;
+	}
+	else {
+		bIsHovering = false;
+	}
+	
+}
+
+void APlayerUnit::GetResources(FResource re, const float amount)
+{
+	UE_LOG(LogTemp, Log, TEXT("REWRARD AMOUNT %f"), amount);
+		
+	FResource a;
+	a.myType = re.myType;
+	
+	if(a.myType == ::ResourceType::GOLD)
+	{
+		GoldAmount += amount;
+	}else if (a.myType == ::ResourceType::METAL)
+	{
+		MetalAmount += amount;
+	}else if (a.myType == ::ResourceType::WOOD)
+	{
+		WoodAmount += amount;
+	}else if (a.myType == ::ResourceType::MYRMALM)
+	{
+		MyrmalmAmount += amount;
+	}else if (a.myType == ::ResourceType::FOOD)
+	{
+		FoodAmount += amount;
+	}else if (a.myType == ::ResourceType::SHIP)
+	{
+		ShipAmount += amount;
+	}
+	
 }

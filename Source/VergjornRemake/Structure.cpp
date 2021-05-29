@@ -3,12 +3,14 @@
 
 #include "Structure.h"
 #include "WorkerUnit.h"
+#include "PlayerUnit.h"
+#include "Kismet/GameplayStatics.h"
 // Sets default values
 AStructure::AStructure()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	//RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Rooooot"));
 	MainMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MainMesh"));
 	MainMesh->SetupAttachment(RootComponent);
 }
@@ -17,21 +19,13 @@ AStructure::AStructure()
 void AStructure::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	//Player = Cast<APlayerUnit>(UGameplayStatics::GetPlayerController(this, 0));
 }
 
 // Called every frame
 void AStructure::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
-	if (IAmWorking()) {
-		//Do working stuff
-		for (int i = 0; i < WorkerUnits.Num(); i++)
-		{
-			WorkerUnits[i]->MyState = AWorkerUnit::Working;
-		}
-	}
 }
 
 bool AStructure::IAmWorking() {
@@ -41,6 +35,21 @@ bool AStructure::IAmWorking() {
 	else {
 		return false;
 	}
+}
+
+void AStructure::GetPlayer(APlayerUnit* unit)
+{
+	MyPlayer = unit;
+}
+
+void AStructure::MakeResource()
+{
+	for (int i = 0; i < Rewards.Num(); i++)
+	{
+		MyPlayer->GetResources(Rewards[i].Type, Rewards[i].Amount);
+	}
+	
+	//NEED GLOBAL VAR STATIC TYPe
 }
 
 bool AStructure::GetWorkerUnits(TArray<AWorkerUnit*> units) {

@@ -24,7 +24,7 @@ void AWorkerUnit::BeginPlay()
 {
 	Super::BeginPlay();
 	AIController = Cast<AAIController>(GetController());
-	
+	ChangeMesh();
 }
 
 // Called every frame
@@ -64,4 +64,20 @@ void AWorkerUnit::GetDestination(FVector newDestination)
 void AWorkerUnit::StopMoving()
 {
 	bIsMoving = false;
+}
+
+void AWorkerUnit::ChangeMesh()
+{
+	//Start array at correct depening on what gender
+	int mesh;
+	if (bIsMale) {
+		mesh = 0;
+	}
+	else {
+		mesh = 3;
+	}
+
+	//Find what stage they are in
+	mesh += Stage;
+	WorkerMesh->SetStaticMesh(BodyMeshes[mesh]);
 }

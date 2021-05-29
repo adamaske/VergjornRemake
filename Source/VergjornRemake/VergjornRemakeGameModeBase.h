@@ -9,6 +9,8 @@
 /**
  * 
  */
+
+
 UCLASS()
 class VERGJORNREMAKE_API AVergjornRemakeGameModeBase : public AGameModeBase
 {
