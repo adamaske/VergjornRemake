@@ -161,31 +161,16 @@ void APlayerUnit::CheckHover() {
 	
 }
 
-void APlayerUnit::GetResources(FResource re, const float amount)
+void APlayerUnit::GetResources(ResourceType re, float amount)
 {
-	UE_LOG(LogTemp, Log, TEXT("REWRARD AMOUNT %f"), amount);
-		
-	FResource a;
-	a.myType = re.myType;
+	//UE_LOG(LogTemp, Log, TEXT("REWRARD AMOUNT %f"), amount);
 	
-	if(a.myType == ::ResourceType::GOLD)
+	for (int i = 0; i < ResourceAmounts.Num(); i++)
 	{
-		GoldAmount += amount;
-	}else if (a.myType == ::ResourceType::METAL)
-	{
-		MetalAmount += amount;
-	}else if (a.myType == ::ResourceType::WOOD)
-	{
-		WoodAmount += amount;
-	}else if (a.myType == ::ResourceType::MYRMALM)
-	{
-		MyrmalmAmount += amount;
-	}else if (a.myType == ::ResourceType::FOOD)
-	{
-		FoodAmount += amount;
-	}else if (a.myType == ::ResourceType::SHIP)
-	{
-		ShipAmount += amount;
+		if(ResourceAmounts[i].myType == re)
+		{
+			//Got gold
+		}
 	}
 	
 }

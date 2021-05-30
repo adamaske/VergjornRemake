@@ -19,9 +19,9 @@ struct FResource
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, Category = Stuff)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stuff)
 		ResourceType myType;
-	UPROPERTY(EditAnywhere, Category = Stuff)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly,Category = Stuff)
 		UTexture2D* ResourceImage;
 };
 USTRUCT(BlueprintType)
@@ -29,9 +29,9 @@ struct FResourceAmount
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, Category = Stuff)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stuff)
 		ResourceType myType;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stuff)
 		float Amount;
 };
 UCLASS()
@@ -90,7 +90,14 @@ public:
 	////Resources
 	//enum ResourceType{ Gold, Wood, Metal, Myrmalm};
 	//struct FConstructionCost;
-	void GetResources(FResource, float);
+	void GetResources(ResourceType, float);
+
+	//Resources
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
+		TArray<FResourceAmount> ResourceAmounts;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
+		TArray<FResource> Resources;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
 		float GoldAmount = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
@@ -103,9 +110,11 @@ public:
 		float FoodAmount{ 0 };
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
 		float ShipAmount{ 0 };
+	
+
+	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Building")
-	class ABuildingManager* BuildingManager;
+		class ABuildingManager* BuildingManager;
 	void GetBuildingManager(class ABuildingManager*);
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
-	TArray<FResourceAmount> ResourceAmounts;
 };

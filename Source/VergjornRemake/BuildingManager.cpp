@@ -59,7 +59,7 @@ bool ABuildingManager::BuyStructure(AStructure* unit)
 		for (auto j = 0; j < MyPlayer->ResourceAmounts.Num(); j++)
 		{
 			//Find the correct type
-			if(MyPlayer->ResourceAmounts[j].myType == unit->Costs[i].Type.myType)
+			if(MyPlayer->ResourceAmounts[j].myType == unit->Costs[i].Type)
 			{
 				checks++;
 				//checks++;
@@ -98,7 +98,7 @@ void ABuildingManager::DoPurchase(AStructure* unit)
 		for (int j = 0; j < MyPlayer->ResourceAmounts.Num(); j++)
 		{
 			//Find the correct type
-			if (MyPlayer->ResourceAmounts[j].myType == unit->Costs[i].Type.myType)
+			if (MyPlayer->ResourceAmounts[j].myType == unit->Costs[i].Type)
 			{
 				//Find if the player has enough of it
 				if (MyPlayer->ResourceAmounts[j].Amount >= unit->Costs[i].Amount)

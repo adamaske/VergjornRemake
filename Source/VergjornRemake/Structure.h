@@ -14,9 +14,9 @@ struct FConstructionCost
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, Category = Stuff)
-		FResource Type;
-	UPROPERTY(EditAnywhere, Category = Stuff)
+	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = Stuff)
+		ResourceType Type;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stuff)
 		float Amount{0};
 };
 enum ResrouceType;
