@@ -21,8 +21,19 @@ struct FResource
 public:
 	UPROPERTY(EditAnywhere, Category = Stuff)
 		ResourceType myType;
+	UPROPERTY(EditAnywhere, Category = Stuff)
+		UTexture2D* ResourceImage;
 };
-
+USTRUCT(BlueprintType)
+struct FResourceAmount
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(EditAnywhere, Category = Stuff)
+		ResourceType myType;
+	UPROPERTY(EditAnywhere)
+		float Amount;
+};
 UCLASS()
 class VERGJORNREMAKE_API APlayerUnit : public APawn
 {
@@ -32,7 +43,7 @@ public:
 	// Sets default values for this pawn's properties
 	APlayerUnit();
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class UCameraComponent* Camera;
 protected:
 	// Called when the game starts or when spawned
@@ -75,7 +86,7 @@ public:
 		bool bIsHovering;
 	//General
 	void CheckHover();
-
+	FHitResult CurrentHover;
 	////Resources
 	//enum ResourceType{ Gold, Wood, Metal, Myrmalm};
 	//struct FConstructionCost;
@@ -92,8 +103,9 @@ public:
 		float FoodAmount{ 0 };
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
 		float ShipAmount{ 0 };
-
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Building")
 	class ABuildingManager* BuildingManager;
 	void GetBuildingManager(class ABuildingManager*);
-	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
+	TArray<FResourceAmount> ResourceAmounts;
 };

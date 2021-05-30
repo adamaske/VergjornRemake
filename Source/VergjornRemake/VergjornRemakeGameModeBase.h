@@ -25,7 +25,13 @@ public:
 	
 	//Player
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TSubclassOf<class APlayerUnit> Player;
+	TSubclassOf<class APlayerUnit> PlayerBlueprint;
+	class APlayerUnit* Player;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		FVector PlayerSpawnLocation;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TArray<class AStructure*> Structures;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		TSubclassOf<class ABuildingManager> BuildingManagerBlueprint;
+	ABuildingManager* BuildingManager;
 };

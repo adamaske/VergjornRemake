@@ -4,7 +4,7 @@
 #include "VergjornRemakeGameModeBase.h"
 #include "PlayerUnit.h"
 #include "Structure.h"
-
+#include "BuildingManager.h"
 AVergjornRemakeGameModeBase::AVergjornRemakeGameModeBase() {
 	PrimaryActorTick.bCanEverTick = true;
 }
@@ -13,13 +13,19 @@ void AVergjornRemakeGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	//Spawn player unit
+	UWorld* World = GetWorld();
+	if(!World)
+	{
+		return;
+	}
+	//Player = World->SpawnActor<APlayerUnit>(PlayerBlueprint, PlayerSpawnLocation, FRotator(0,0,0));
 
-	//Get structures
-
-	//Give structures player refrence
-
-	//Give Player structure refrences
-
+	//BuildingManager = World->SpawnActor<ABuildingManager>(BuildingManagerBlueprint);
+	//GiveRefrences
+	//Player->GetBuildingManager(BuildingManager);
+	//BuildingManager->GetPlayer(Player);
+	
+	
 	
 }
 

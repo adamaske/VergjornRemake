@@ -10,7 +10,7 @@ AStructure::AStructure()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	//RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Rooooot"));
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	MainMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MainMesh"));
 	MainMesh->SetupAttachment(RootComponent);
 }
@@ -27,7 +27,10 @@ void AStructure::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
-
+bool AStructure::Thing()
+{
+	return true;
+}
 bool AStructure::IAmWorking() {
 	if (WorkerUnits.Num() > 0) {
 		return true;

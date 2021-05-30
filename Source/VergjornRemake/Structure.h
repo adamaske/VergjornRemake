@@ -45,7 +45,8 @@ public:
 	FString StructureDescription{ "Description" };
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
 		float ConstructionCost{ 40.f };
-
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
+		UTexture2D* StructureImage;
 	//Health
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
 	float CurrentHealth{ 100.f };
@@ -75,8 +76,8 @@ public:
 	void MakeResource();
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float CurrentProgess{0};
-	
-
+	UFUNCTION(BlueprintCallable)
+	bool Thing();
 	//Building
 	class ABuildingManager* BuildingManager;
 

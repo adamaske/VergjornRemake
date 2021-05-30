@@ -1,10 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "PlayerUnit.h"
-
 #include <string>
-
 #include "Camera/CameraComponent.h"
 #include "WorkerUnit.h"
 #include "Structure.h"
@@ -13,7 +9,7 @@ APlayerUnit::APlayerUnit()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(RootComponent);
 }
@@ -25,8 +21,6 @@ void APlayerUnit::BeginPlay()
 	
 	PC = Cast<APlayerController>(GetController());
 	PC->bShowMouseCursor = true;
-	GoldAmount = 0;
-	GoldAmount += 1;
 }
 
 // Called every frame
@@ -35,6 +29,7 @@ void APlayerUnit::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	CheckHover();
+
 	if (!MovementVector.IsNearlyZero()) {
 		FVector newLocation = GetActorLocation() + (MovementVector * CameraMovementSpeed * DeltaTime);
 
@@ -110,8 +105,9 @@ void APlayerUnit::EndSelection() {
 void APlayerUnit::Interact() {
 	FHitResult HitResult;
 	PC->GetHitResultUnderCursor(ECC_Visibility, true, HitResult);
-
+	
 	if (!HitResult.GetActor()) {
+		
 		return;
 	}
 
@@ -145,6 +141,7 @@ void APlayerUnit::CheckHover() {
 	FHitResult HitResult;
 	PC->GetHitResultUnderCursor(ECC_Visibility, true, HitResult);
 	if (!HitResult.GetActor()) {
+		UE_LOG(LogTemp, Log, TEXT("No actor under HItResult from hover"));
 		bIsHovering = false;
 		return;
 	}
@@ -191,4 +188,8 @@ void APlayerUnit::GetResources(FResource re, const float amount)
 		ShipAmount += amount;
 	}
 	
+}
+void APlayerUnit::GetBuildingManager(ABuildingManager* manager)
+{
+	BuildingManager = manager;
 }
