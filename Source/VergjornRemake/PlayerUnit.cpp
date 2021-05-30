@@ -164,10 +164,10 @@ void APlayerUnit::CheckHover() {
 void APlayerUnit::GetResources(ResourceType re, float amount)
 {
 	//UE_LOG(LogTemp, Log, TEXT("REWRARD AMOUNT %f"), amount);
-	
-	for (int i = 0; i < ResourceAmounts.Num(); i++)
+	int k = ResourceAmounts.Num();
+	for (int p = 0; p < ResourceAmounts.Num(); p++)
 	{
-		if(ResourceAmounts[i].myType == re)
+		if(ResourceAmounts[p].myType == re)
 		{
 			//Got gold
 		}
