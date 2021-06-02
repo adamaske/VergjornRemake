@@ -17,10 +17,10 @@ class VERGJORNREMAKE_API AGoldMine : public AStructure
 public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void BeginPlay() override;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
 		float MineTime{ 10 };
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		float CurrentTime{ 10 };
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Info")
+		float CurrentTime{ 0 };
 
 	void Mine(float);
 };

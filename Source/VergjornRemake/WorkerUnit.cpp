@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "GatherableUnit.h"
 // Sets default values
 AWorkerUnit::AWorkerUnit()
 {
@@ -32,6 +33,20 @@ void AWorkerUnit::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	switch(WorkPlace)
+	{
+		case EWorkPlace::STRUCTURE:
+			//Let the structure control the player
+			break;
+		case EWorkPlace::GATHERING:
+			//Automate gathering
+			break;
+		case EWorkPlace::NONE:
+			//DO nothing
+			break;
+		
+	}
+	
 	if (bIsMoving) {
 		AIController->MoveToLocation(Destination, 10.f);
 	}
@@ -46,11 +61,20 @@ void AWorkerUnit::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 void AWorkerUnit::GetStructure(AStructure* unit)
 {
+	if(MyStructure && MyStructure != unit)
+	{
+		RemoveStructure();
+	}
 	MyStructure = unit;
+	WorkPlace = EWorkPlace::STRUCTURE;
 }
 
 void AWorkerUnit::RemoveStructure()
 {
+	if(MyStructure)
+	{
+		MyStructure->RemoveWorker(this);
+	}
 	MyStructure = nullptr;
 }
 
@@ -58,7 +82,7 @@ void AWorkerUnit::GetDestination(FVector newDestination)
 {
 	bIsMoving = true;
 	Destination = newDestination;
-	UE_LOG(LogTemp, Log, TEXT("I GOT DESTINATION"));
+
 }
 
 void AWorkerUnit::StopMoving()
@@ -80,4 +104,30 @@ void AWorkerUnit::ChangeMesh()
 	//Find what stage they are in
 	mesh += Stage;
 	WorkerMesh->SetStaticMesh(BodyMeshes[mesh]);
+}
+
+float AWorkerUnit::DistanceFromDestination()
+{
+	return FVector::Distance(GetActorLocation(), Destination);
+}
+
+bool AWorkerUnit::InRange(float min)
+{
+	float distance = FVector::Distance(GetActorLocation(), Destination);
+	if(distance <= min)
+	{
+		return true;
+	}else
+	{
+		return false;
+	}
+}
+
+void AWorkerUnit::GetGatherableUnit(AGatherableUnit* unit)
+{
+	WorkPlace = EWorkPlace::GATHERING;
+	if(MyStructure)
+	{
+		MyStructure->RemoveWorker(this);
+	}
 }

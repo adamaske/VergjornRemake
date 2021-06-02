@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "PlayerUnit.generated.h"
+
 UENUM(BlueprintType)
 enum class ResourceType : uint8 {
 	GOLD UMETA(DisplayName = "GOLD"),
@@ -14,6 +15,7 @@ enum class ResourceType : uint8 {
 	FOOD = 4	UMETA(DisplayName = "FOOD"),
 	SHIP = 5	UMETA(DisplayName = "SHIP")
 };
+
 USTRUCT(BlueprintType)
 struct FResource
 {
@@ -21,9 +23,10 @@ struct FResource
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stuff)
 		ResourceType myType;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly,Category = Stuff)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stuff)
 		UTexture2D* ResourceImage;
 };
+
 USTRUCT(BlueprintType)
 struct FResourceAmount
 {
@@ -33,7 +36,12 @@ public:
 		ResourceType myType;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stuff)
 		float Amount;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stuff)
+		float BaseCapacity{ 100 };
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stuff)
+		float ExtraCapacity{0};
 };
+
 UCLASS()
 class VERGJORNREMAKE_API APlayerUnit : public APawn
 {
@@ -87,34 +95,23 @@ public:
 	//General
 	void CheckHover();
 	FHitResult CurrentHover;
-	////Resources
-	//enum ResourceType{ Gold, Wood, Metal, Myrmalm};
-	//struct FConstructionCost;
-	void GetResources(ResourceType, float);
-
+	
 	//Resources
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
 		TArray<FResourceAmount> ResourceAmounts;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
 		TArray<FResource> Resources;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
-		float GoldAmount = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
-		float WoodAmount{ 0 };
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
-		float MetalAmount{ 0 };
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
-		float MyrmalmAmount{ 0 };
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
-		float FoodAmount{ 0 };
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
-		float ShipAmount{ 0 };
-	
-
-	
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Building")
 		class ABuildingManager* BuildingManager;
 	void GetBuildingManager(class ABuildingManager*);
+	bool GetResources(ResourceType,float);
+
+	//Structure
+	class AStructure* SelectedStructure;
+	void Select();
+
+	//Gathering
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	class AGatherableHandler* GatherableHandler;
+	
 };

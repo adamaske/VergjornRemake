@@ -49,4 +49,5 @@ public:
 	class AAIController* AIController;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	class UCharacterMovementComponent* moveComp;
+	
 };

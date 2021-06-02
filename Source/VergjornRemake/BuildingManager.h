@@ -7,6 +7,8 @@
 
 #include "BuildingManager.generated.h"
 
+enum class ResourceType : uint8;
+class UCapacityComponent;
 struct FResource;
 USTRUCT(BlueprintType)
 struct FStructureInfo
@@ -54,7 +56,7 @@ public:
 	bool bIsBuilding;
 	UFUNCTION(BlueprintCallable)
 	void Build();
-
+	void CreateRefrences();
 	//Placing Visual and Register Placement
 	UFUNCTION(BlueprintCallable)
 	void Place();
@@ -71,6 +73,15 @@ public:
 		int BuildingsCount = 0;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Building")
 		TArray<const AStructure*> BPStructures;
+
+	TArray<AStructure*> Structures;
+	TArray<UCapacityComponent*> CapacityComponents;
+	void ReloadCapacity();
+
+	
+	UCapacityComponent* GetClosestCapacity(ResourceType, class AWorkerUnit*);
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	class AGatherableHandler* GatherableHandler;
 };
 
 

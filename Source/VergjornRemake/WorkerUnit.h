@@ -5,7 +5,22 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "WorkerUnit.generated.h"
-
+class AGatherableUnit;
+UENUM(BlueprintType)
+enum class EWorkState : uint8
+{
+	GATHERING,
+	DELIVERING,
+	BUILDING,
+	IDLE
+};
+UENUM(BlueprintType)
+enum class EWorkPlace : uint8
+{
+	GATHERING,
+	STRUCTURE,
+	NONE
+};
 UCLASS()
 class VERGJORNREMAKE_API AWorkerUnit : public ACharacter
 {
@@ -56,5 +71,19 @@ public:
 	//General infromation
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
 		FString WorkerName;
+	
+	float DistanceFromDestination();
 
+	//Working
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
+		EWorkState WorkingState = EWorkState::IDLE;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
+		EWorkPlace WorkPlace = EWorkPlace::NONE;
+	AGatherableUnit* MyGatherableUnit;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
+	float CurrentTime{ 0 };
+
+	bool InRange(float);
+
+	void GetGatherableUnit(AGatherableUnit*);
 };

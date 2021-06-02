@@ -8,7 +8,7 @@ void AGoldMine::BeginPlay()
 }
 void AGoldMine::Tick(float DeltaTime)
 {
-	Super::BeginPlay();
+	Super::Tick(DeltaTime);
 
 	if (IAmWorking())
 	{

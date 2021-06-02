@@ -8,7 +8,6 @@
 #include "Structure.generated.h"
 
 class APlayerUnit;
-
 USTRUCT(BlueprintType)
 struct FConstructionCost
 {
@@ -28,7 +27,6 @@ class VERGJORNREMAKE_API AStructure : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AStructure();
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class UStaticMeshComponent* MainMesh;
 protected:
@@ -40,33 +38,32 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
-	FString StructureName{ "Structure" };
+		FString StructureName{ "Structure" };
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
-	FString StructureDescription{ "Description" };
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
-		float ConstructionCost{ 40.f };
+		FString StructureDescription{ "Description" };
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
 		UTexture2D* StructureImage;
 	//Health
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
 	float CurrentHealth{ 100.f };
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
 	float MaxHealth{ 100.f };
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Info")
 	bool bIsDead{ 0 };
 
-	void TakeDamage(float);
+	//void TakeDamage(float);
 
 	//Getting and remvoing WorkerUnits
 	bool GetWorkerUnits(TArray<class AWorkerUnit*>);
+	bool GetWorkerUnits(AWorkerUnit*);
 	void RemoveWorkerUnits(TArray<class AWorkerUnit*>);
+	void RemoveWorker(AWorkerUnit*);
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
 		TArray<class AWorkerUnit*> WorkerUnits;
 	bool IAmWorking();
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
-		TArray<FConstructionCost> Rewards;
+	
 	//Player refrence
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
 	class APlayerUnit* MyPlayer;
 	void GetPlayer(APlayerUnit*);
 	
@@ -74,13 +71,21 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
 	float ResourceAmountToGive{ 10 };
 	void MakeResource();
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	float CurrentProgess{0};
-	UFUNCTION(BlueprintCallable)
-	bool Thing();
 	//Building
 	class ABuildingManager* BuildingManager;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
+		TArray<FConstructionCost> Rewards;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
+		TArray<FConstructionCost> Costs;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Building")
-	TArray<FConstructionCost> Costs;
+	//Custom features
+	virtual void SelectedByPlayer();
+	virtual void DeselectedByPlayer();
+	//Gathering
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Info")
+	class AGatherableHandler* GatherableHandler;
+	TArray<class AGatherableUnit*> GatherableUnits;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Info")
+		ResourceType GatheringType = ResourceType::GOLD;
+	
 };
