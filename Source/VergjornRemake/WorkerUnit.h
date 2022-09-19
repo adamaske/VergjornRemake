@@ -65,7 +65,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Meshes")
 	bool bIsMale{ 0 };
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Meshes")
-	int Stage{ 0 }; // 0 = child, 1 = villager, 2 = viking;
+	int Stage{ 0 }; // 0 = child, 1 = villager, 2 = viking;|
 	void ChangeMesh();
 
 	//General infromation
