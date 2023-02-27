@@ -4,7 +4,6 @@
 #include "VergjornRemasterPlayerController.h"
 #include "VergjornRemasterCharacter.h"
 #include "UObject/ConstructorHelpers.h"
-
 AVergjornRemasterGameMode::AVergjornRemasterGameMode()
 {
 	// use our custom PlayerController class

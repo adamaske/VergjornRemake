@@ -16,3 +16,7 @@ FGuid VergjornGUID::GetGUID()
 {
 	return mGUID;
 }
+
+void VergjornGUID::SetNewGUID() {
+	mGUID = mGUID.NewGuid();
+}

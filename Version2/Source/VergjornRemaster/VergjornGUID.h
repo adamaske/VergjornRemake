@@ -14,7 +14,7 @@ public:
 	~VergjornGUID();
 
 	FGuid GetGUID();
-
+	void SetNewGUID();
 private:
 	FGuid mGUID;
 };

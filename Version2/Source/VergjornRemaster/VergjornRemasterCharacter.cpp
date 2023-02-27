@@ -13,7 +13,7 @@
 
 AVergjornRemasterCharacter::AVergjornRemasterCharacter()
 {
-	// Set size for player capsule
+	// Set size for player capsule 
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
 	// Don't rotate character to camera direction

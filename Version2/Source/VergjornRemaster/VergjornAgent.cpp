@@ -2,7 +2,6 @@
 
 
 #include "VergjornAgent.h"
-
 VergjornAgent::VergjornAgent()
 {
 }
