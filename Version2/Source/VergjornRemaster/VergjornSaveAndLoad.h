@@ -10,25 +10,18 @@
 
  //Contains all data for loading a vergjorn game
 
-struct VergjornSave {
-public:
-	std::string mSaveName;
-	int mSaveIndex = 0;
-};
-
 class VERGJORNREMASTER_API VergjornSaveAndLoad
 {
 public:
 	VergjornSaveAndLoad();
 	~VergjornSaveAndLoad();
 
-	void Save();
-	void Load();
+	void Save(class UVergjornSaveGame g, FString name, int index);
+	void CompletedSave(const FString& SlotName, const int32 UserIndex, bool bSuccess);
+	UVergjornSaveGame* Load(FString name, int index);
 
-	void LoadAllSaves();
-	TArray<VergjornSave> GetAllVergjornSaves();
+	TArray<UVergjornSaveGame*> LoadAllVergjornSaves();
 
-	std::string GetSaveFileName(int index);
+	static std::string GetSaveFileName(int index);
 private:
-	std::string mSavePrefix = "VergjornSave";
 };

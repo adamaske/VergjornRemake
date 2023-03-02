@@ -16,4 +16,8 @@ class VERGJORNREMASTER_API AMainMenuGM : public AVergjornRemasterGameMode
 public:
 	AMainMenuGM();
 	~AMainMenuGM();
+
+	void LoadSaves();
+	UPROPERTY()
+	TArray<class UVergjornSaveGame*> mLoadedSaves;
 };

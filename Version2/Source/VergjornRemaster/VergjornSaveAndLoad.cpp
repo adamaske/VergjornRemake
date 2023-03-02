@@ -2,6 +2,14 @@
 
 
 #include "VergjornSaveAndLoad.h"
+#include "JsonObjectConverter.h"
+#include "VergjornSaveGame.h"
+#include <string>
+#include <fstream>
+
+#include "Kismet/GameplayStatics.h"
+#include <Serialization/JsonSerializer.h>
+static std::string VergjornSavePrefix = "VergjornSave";
 
 VergjornSaveAndLoad::VergjornSaveAndLoad()
 {
@@ -11,40 +19,46 @@ VergjornSaveAndLoad::~VergjornSaveAndLoad()
 {
 }
 
-void VergjornSaveAndLoad::Save()
+void VergjornSaveAndLoad::Save(UVergjornSaveGame g, FString name, int index)
 {
+
 	//Saving
-}
-
-void VergjornSaveAndLoad::Load() {
-	//Loading
-}
-
-void VergjornSaveAndLoad::LoadAllSaves()
-{
-	//Start at save index 0
-	int saveIndex = 0;
-	std::string fileDir = std::string(TCHAR_TO_UTF8(*FPaths::GetProjectFilePath())) + "/"; ;//Get Save Dir
-	std::string fileName = GetSaveFileName(saveIndex);
-	
-	//While we can find the file with the idnex we load more fiels
-	while (1) {
-		std::string file = fileDir + GetSaveFileName(saveIndex);
-
-		saveIndex++;
+	auto save = Cast<UVergjornSaveGame>(UGameplayStatics::CreateSaveGameObject(UVergjornSaveGame::StaticClass()));
+	if (!save) {
+		//Did not manage to create a vergjorn save game
 	}
+	FAsyncSaveGameToSlotDelegate savedDelegate;
+	savedDelegate.BindRaw(this, &VergjornSaveAndLoad::CompletedSave);
 
+	save->MapName = "Volugrimar";
+
+	UGameplayStatics::AsyncSaveGameToSlot(save, name, index, savedDelegate);
 
 }
 
-TArray<VergjornSave> VergjornSaveAndLoad::GetAllVergjornSaves()
+void VergjornSaveAndLoad::CompletedSave(const FString& SlotName, const int32 UserIndex, bool bSuccess)
 {
-	return TArray<VergjornSave>();
 }
+
+UVergjornSaveGame* VergjornSaveAndLoad::Load(FString name, int index)
+{
+	auto save = Cast<UVergjornSaveGame>(UGameplayStatics::LoadGameFromSlot(name, index));
+	if (save) {
+		return save;
+	}
+	return nullptr;
+}
+
+TArray<class UVergjornSaveGame*> VergjornSaveAndLoad::LoadAllVergjornSaves()
+{
+	return TArray<class UVergjornSaveGame*>();
+}
+
+
 
 std::string VergjornSaveAndLoad::GetSaveFileName(int index)
 {
-	std::string base = mSavePrefix;
+	std::string base = VergjornSavePrefix;
 	base += "_";
 	base += "0";
 	base += ".save";
