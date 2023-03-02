@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "VergjornGameMode.h"
-#include "VergjornMapGameMode.generated.h"
+#include "GameFramework/GameModeBase.h"
+#include "VergjornGameMode.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class VERGJORNREMASTER_API AVergjornMapGameMode : public AVergjornGameMode
+class VERGJORNREMASTER_API AVergjornGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	

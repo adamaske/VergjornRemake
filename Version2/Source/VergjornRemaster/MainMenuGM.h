@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "VergjornRemasterGameMode.h"
+#include "VergjornGameMode.h"
 #include "MainMenuGM.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class VERGJORNREMASTER_API AMainMenuGM : public AVergjornRemasterGameMode
+class VERGJORNREMASTER_API AMainMenuGM : public AVergjornGameMode
 {
 	GENERATED_BODY()
 public:

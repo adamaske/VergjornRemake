@@ -15,7 +15,7 @@ class VERGJORNREMASTER_API VergjornSaveAndLoad
 public:
 	VergjornSaveAndLoad();
 	~VergjornSaveAndLoad();
-
+	
 	void Save(class UVergjornSaveGame g, FString name, int index);
 	void CompletedSave(const FString& SlotName, const int32 UserIndex, bool bSuccess);
 	UVergjornSaveGame* Load(FString name, int index);

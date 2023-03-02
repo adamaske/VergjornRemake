@@ -2,16 +2,39 @@
 
 
 #include "VergjornPlayerController.h"
-#include "GameFramework/Pawn.h"
-#include "Blueprint/AIBlueprintHelperLibrary.h"
-#include "NiagaraSystem.h"
-#include "NiagaraFunctionLibrary.h"
-#include "VergjornRemasterCharacter.h"
-#include "Engine/World.h"
-#include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystems.h"
-
+#include "VergjornGameInstance.h"
+#include "VergjornSaveAndLoad.h"
+#include "VergjornSaveGame.h"
 AVergjornPlayerController::AVergjornPlayerController()
 {
 		bShowMouseCursor = true;
+}
+
+void AVergjornPlayerController::SetupInputComponent()
+{
+	// set up gameplay key bindings
+	Super::SetupInputComponent();
+
+	InputComponent->BindAction("Save", IE_Pressed, this, &AVergjornPlayerController::Save);
+
+	InputComponent->BindAction("Load", IE_Pressed, this, &AVergjornPlayerController::Load);
+
+}
+
+void AVergjornPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void AVergjornPlayerController::Save()
+{
+	auto vergjorn = Cast<UVergjornGameInstance>(GetGameInstance());
+	if (vergjorn) {
+
+	}
+}
+
+void AVergjornPlayerController::Load()
+{
+
 }

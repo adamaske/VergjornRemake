@@ -22,4 +22,12 @@ class VERGJORNREMASTER_API AVergjornPlayerController : public APlayerController
 public:
 	AVergjornPlayerController();
 
+
+	virtual void SetupInputComponent() override;
+
+	// To add mapping context
+	virtual void BeginPlay();
+
+	void Save();
+	void Load();
 };

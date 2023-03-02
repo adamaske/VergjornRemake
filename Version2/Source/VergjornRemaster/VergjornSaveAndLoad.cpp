@@ -27,12 +27,12 @@ void VergjornSaveAndLoad::Save(UVergjornSaveGame g, FString name, int index)
 	if (!save) {
 		//Did not manage to create a vergjorn save game
 	}
-	FAsyncSaveGameToSlotDelegate savedDelegate;
-	savedDelegate.BindRaw(this, &VergjornSaveAndLoad::CompletedSave);
+	//FAsyncSaveGameToSlotDelegate savedDelegate;
+	//savedDelegate.BindRaw(this, &VergjornSaveAndLoad::CompletedSave);
 
 	save->MapName = "Volugrimar";
 
-	UGameplayStatics::AsyncSaveGameToSlot(save, name, index, savedDelegate);
+	UGameplayStatics::SaveGameToSlot(save, name, index);
 
 }
 
