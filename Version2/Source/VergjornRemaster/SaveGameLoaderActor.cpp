@@ -8,12 +8,10 @@
 // Sets default values
 ASaveGameLoaderActor::ASaveGameLoaderActor()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("Loader Actor Created!")));
-
+	//
 }
-
 // Called when the game starts or when spawned
 void ASaveGameLoaderActor::BeginPlay()
 {
@@ -27,7 +25,10 @@ void ASaveGameLoaderActor::BeginPlay()
 			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::Printf(TEXT("Failed to load save in begin play")));
 		}
 	}
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("Loader Actor Began!")));
+
 }
+
 
 // Called every frame
 void ASaveGameLoaderActor::Tick(float DeltaTime)

@@ -8,7 +8,7 @@
 #include "SaveGameCreatorActor.h"
 void AVergjornMapGameMode::StartPlay()
 {
-	//Super::StartPlay();
+	Super::StartPlay();
 
 	//Load what save game to use
 	auto  vergjorn = Cast<UVergjornGameInstance>(GetGameInstance());

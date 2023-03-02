@@ -92,7 +92,7 @@ void UVergjornGameInstance::Save()
 	mCreatorActor->GetVergjornSaveGameFromWorld(save);
 
 
-	SaveGameIncremented(save, TCHAR_TO_UTF8(std::string("VergjornSave_" + std::to_string(mNewestSaveIndex)).c_str()), 0);
+	SaveGameIncremented(save, TCHAR_TO_UTF8(std::string("VergjornSave_" + std::to_string(0)).c_str()), 0);
 }
 
 void UVergjornGameInstance::LoadMostRecentSaveGame()

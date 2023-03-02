@@ -10,7 +10,7 @@ ASaveGameCreatorActor::ASaveGameCreatorActor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("Creator Actor Created!")));
+	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("Creator Actor Created!")));
 }
 
 // Called when the game starts or when spawned
@@ -19,7 +19,11 @@ void ASaveGameCreatorActor::BeginPlay()
 	Super::BeginPlay();
 	
 	Cast<UVergjornGameInstance>(GetGameInstance())->SetCreatorActor(this);
+
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("Creator Actor Began!")));
+
 }
+
 
 // Called every frame
 void ASaveGameCreatorActor::Tick(float DeltaTime)
