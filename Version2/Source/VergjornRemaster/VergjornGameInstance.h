@@ -20,8 +20,21 @@ public:
 
     std::vector<std::shared_ptr<class UVergjornSaveGame>> LoadVergjornSaves();
 
-    
+    UFUNCTION(BlueprintCallable)
+        void SetActiveMapSaveGame(UVergjornSaveGame* save);
+    UFUNCTION(BlueprintCallable)
+        UVergjornSaveGame* GetActiveSaveGame();
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        int mNewestSaveIndex;
+    UFUNCTION(BlueprintCallable)
+        void SaveGameIncremented(UVergjornSaveGame* save, FString name, int userIndex);
+
+    UFUNCTION(BlueprintCallable)
+    void Save();
 private:
     // All my variables
     std::shared_ptr<int> mActiveSave;
+
+    //Take ownership of it
+    std::shared_ptr<UVergjornSaveGame> mActiveVergjornSaveGame;
 };

@@ -14,10 +14,18 @@ class VERGJORNREMASTER_API UVergjornSaveGame : public USaveGame
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(VisibleAnywhere, Category = Basic)
+	UVergjornSaveGame();
+	UPROPERTY(VisibleAnywhere, Category = Basic, BlueprintReadWrite)
 		FString PlayerName = "Adam";
 
-	UPROPERTY(VisibleAnywhere, Category = Basic)
+	UPROPERTY(VisibleAnywhere, Category = Basic, BlueprintReadWrite)
 		FString MapName = "Volgurimar";
+
+	UPROPERTY(VisibleAnywhere, Category = Basic, BleuprintReadWrite)
+	TArray<FWorker> Workers;
+};
+
+USTRUCT()
+struct FWorker {
 
 };

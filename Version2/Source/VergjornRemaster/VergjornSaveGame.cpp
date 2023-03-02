@@ -3,3 +3,6 @@
 
 #include "VergjornSaveGame.h"
 
+UVergjornSaveGame::UVergjornSaveGame()
+{
+}

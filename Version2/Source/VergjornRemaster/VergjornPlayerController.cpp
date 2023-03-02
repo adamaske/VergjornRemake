@@ -29,9 +29,10 @@ void AVergjornPlayerController::BeginPlay()
 void AVergjornPlayerController::Save()
 {
 	auto vergjorn = Cast<UVergjornGameInstance>(GetGameInstance());
-	if (vergjorn) {
-
+	if (!vergjorn) {
+		return;
 	}
+	vergjorn->Save();
 }
 
 void AVergjornPlayerController::Load()

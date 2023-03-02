@@ -13,5 +13,8 @@ UCLASS()
 class VERGJORNREMASTER_API AVergjornMapGameMode : public AVergjornGameMode
 {
 	GENERATED_BODY()
-	
+public:
+
+		virtual void StartPlay() override;
+
 };

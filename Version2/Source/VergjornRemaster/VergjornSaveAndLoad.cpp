@@ -19,7 +19,7 @@ VergjornSaveAndLoad::~VergjornSaveAndLoad()
 {
 }
 
-void VergjornSaveAndLoad::Save(UVergjornSaveGame g, FString name, int index)
+void VergjornSaveAndLoad::Save(UVergjornSaveGame* g, FString name, int index)
 {
 
 	//Saving

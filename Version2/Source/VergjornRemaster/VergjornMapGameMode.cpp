@@ -2,4 +2,20 @@
 
 
 #include "VergjornMapGameMode.h"
+#include "VergjornSaveGame.h"
+#include "VergjornGameInstance.h"
+void AVergjornMapGameMode::StartPlay()
+{
+	//Super::StartPlay();
 
+	//Load what save game to use
+	auto  vergjorn = Cast<UVergjornGameInstance>(GetGameInstance());
+	if (!vergjorn) {
+		//Error
+	}
+
+	auto save = vergjorn->GetActiveSaveGame();
+	if (!save) {
+		//Error
+	}
+}
