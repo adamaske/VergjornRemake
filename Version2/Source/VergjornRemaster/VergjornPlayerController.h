@@ -28,6 +28,7 @@ public:
 	// To add mapping context
 	virtual void BeginPlay();
 
-	void Save();
-	void Load();
+	//Quick saving and loading
+	void QuickSave();
+	void QuickLoad();
 };

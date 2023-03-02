@@ -14,11 +14,11 @@ class VERGJORNREMASTER_API UVergjornGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 public:
-    //virtual void Init() override;
     // End USubsystem
+    UFUNCTION(BlueprintCallable)
     void VergjornStarted();
 
-    std::vector<std::shared_ptr<class UVergjornSaveGame>> LoadVergjornSaves();
+    std::vector<class UVergjornSaveGame*> LoadVergjornSaves();
 
     UFUNCTION(BlueprintCallable)
         void SetActiveMapSaveGame(UVergjornSaveGame* save);
@@ -31,10 +31,32 @@ public:
 
     UFUNCTION(BlueprintCallable)
     void Save();
+
+    void SetLoaderActor(class ASaveGameLoaderActor* loader) {
+        mLoaderActor = loader;
+    };
+    void SetCreatorActor(class ASaveGameCreatorActor* creator) {
+        mCreatorActor = creator;
+    };
+
+    void LoadMostRecentSaveGame();
 private:
     // All my variables
     std::shared_ptr<int> mActiveSave;
 
     //Take ownership of it
     std::shared_ptr<UVergjornSaveGame> mActiveVergjornSaveGame;
+
+   ASaveGameLoaderActor* mLoaderActor;
+
+   ASaveGameCreatorActor* mCreatorActor;
+
+   int mLastActiveScene;
+
+   void ApplyConfig();
+
+   TMap<int, UVergjornSaveGame*> mVergjornSaves;
+
+                           
+
 };

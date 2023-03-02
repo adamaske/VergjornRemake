@@ -4,6 +4,8 @@
 #include "VergjornMapGameMode.h"
 #include "VergjornSaveGame.h"
 #include "VergjornGameInstance.h"
+#include "SaveGameLoaderActor.h"
+#include "SaveGameCreatorActor.h"
 void AVergjornMapGameMode::StartPlay()
 {
 	//Super::StartPlay();
@@ -18,4 +20,9 @@ void AVergjornMapGameMode::StartPlay()
 	if (!save) {
 		//Error
 	}
+	mLoaderActor = Cast<ASaveGameLoaderActor>(GetWorld()->SpawnActor(ASaveGameLoaderActor::StaticClass()));
+	mCreatorActor = Cast<ASaveGameCreatorActor>(GetWorld()->SpawnActor(ASaveGameCreatorActor::StaticClass()));
+
+
+
 }

@@ -6,7 +6,6 @@
 #include "VergjornSaveGame.h"
 #include <string>
 #include <fstream>
-
 #include "Kismet/GameplayStatics.h"
 #include <Serialization/JsonSerializer.h>
 static std::string VergjornSavePrefix = "VergjornSave";
@@ -42,19 +41,18 @@ void VergjornSaveAndLoad::CompletedSave(const FString& SlotName, const int32 Use
 
 UVergjornSaveGame* VergjornSaveAndLoad::Load(FString name, int index)
 {
+	GEngine->AddOnScreenDebugMessage(3, 10, FColor::Cyan, FString::Printf(TEXT("Load slot")));
+
 	auto save = Cast<UVergjornSaveGame>(UGameplayStatics::LoadGameFromSlot(name, index));
 	if (save) {
+
+		GEngine->AddOnScreenDebugMessage(3, 10, FColor::Green, FString::Printf(TEXT("Loaded slot")));
 		return save;
 	}
+
+	GEngine->AddOnScreenDebugMessage(3, 10, FColor::Red, FString::Printf(TEXT("Didnt find slot")));
 	return nullptr;
 }
-
-TArray<class UVergjornSaveGame*> VergjornSaveAndLoad::LoadAllVergjornSaves()
-{
-	return TArray<class UVergjornSaveGame*>();
-}
-
-
 
 std::string VergjornSaveAndLoad::GetSaveFileName(int index)
 {
@@ -63,4 +61,43 @@ std::string VergjornSaveAndLoad::GetSaveFileName(int index)
 	base += "0";
 	base += ".save";
 	return base;
+}
+
+VergjornConfig VergjornSaveAndLoad::LoadVergjornConfigFile(std::string fileName)
+{
+	VergjornConfig con;
+	
+	std::ifstream file;
+
+	file.open(fileName);
+	if (file.is_open()) {
+		std::string line;
+		std::getline(file, line);
+
+		if (line != "Vergjorn Config") {
+			//Something is wwrong
+			con.bEmptyConfig = true;
+			return con;
+		}
+
+		std::getline(file, line);
+		con.mMostRecentSaveGame = std::stoi(line);
+	}
+
+	file.close();
+
+	return VergjornConfig();
+}
+
+void VergjornSaveAndLoad::CreateVergjornConfigFile(std::string fileName, VergjornConfig con)
+{
+
+	std::ofstream file;
+	file.open(fileName);
+
+	file << "Vergjorn Config\n";
+
+	file << std::to_string(con.mMostRecentSaveGame);
+
+	file.close();
 }

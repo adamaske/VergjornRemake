@@ -15,6 +15,10 @@ class VERGJORNREMASTER_API AVergjornMapGameMode : public AVergjornGameMode
 	GENERATED_BODY()
 public:
 
-		virtual void StartPlay() override;
+	virtual void StartPlay() override;
+	
+	class ASaveGameLoaderActor* mLoaderActor;
+
+	class ASaveGameCreatorActor* mCreatorActor;
 
 };

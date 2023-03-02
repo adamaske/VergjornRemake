@@ -17,6 +17,7 @@ public:
 	AMainMenuGM();
 	~AMainMenuGM();
 
+	//virtual void StartPlay();
 	void LoadSaves();
 	UPROPERTY()
 	TArray<class UVergjornSaveGame*> mLoadedSaves;

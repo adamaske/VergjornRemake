@@ -9,6 +9,7 @@
 /**
  * 
  */
+
 UCLASS()
 class VERGJORNREMASTER_API UVergjornSaveGame : public USaveGame
 {
@@ -21,11 +22,6 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Basic, BlueprintReadWrite)
 		FString MapName = "Volgurimar";
 
-	UPROPERTY(VisibleAnywhere, Category = Basic, BleuprintReadWrite)
-	TArray<FWorker> Workers;
 };
 
-USTRUCT()
-struct FWorker {
 
-};
