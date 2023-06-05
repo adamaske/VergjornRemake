@@ -1,0 +1,117 @@
+<mxfile host="Electron" modified="2023-06-05T21:00:27.263Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.2.8 Chrome/112.0.5615.165 Electron/24.2.0 Safari/537.36" etag="BLtHo_MBfUjBXmghLS0g" version="21.2.8" type="device">
+  <diagram name="Page-1" id="aVoCzewdLIL7foIbcZc3">
+    <mxGraphModel dx="998" dy="752" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="H05L0OicOoHxccUPVke1-1" value="Entity" style="swimlane;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" vertex="1" parent="1">
+          <mxGeometry x="70" y="350" width="200" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-2" value="Game Instance" style="swimlane;whiteSpace=wrap;html=1;fillColor=#1ba1e2;strokeColor=#006EAF;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="50" y="110" width="200" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-3" value="Input" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="110" width="200" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-4" value="Request" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-3">
+          <mxGeometry x="20" y="50" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-5" value="Release" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-3">
+          <mxGeometry x="20" y="120" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-6" value="Select Entities" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="775" width="200" height="305" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-7" value="Start Selection" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-6">
+          <mxGeometry x="20" y="40" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-8" value="End Selection" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-6">
+          <mxGeometry x="20" y="145" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-13" value="In Selection" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-6">
+          <mxGeometry x="20" y="95" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-32" value="RequestSelection" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-6">
+          <mxGeometry x="20" y="195" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-10" value="End" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="940" width="270" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-12" value="mHUD-&amp;gt;GetActorsInSelectionRectangle" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-10">
+          <mxGeometry x="20" y="30" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-30" value="Cast to Entities" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" vertex="1" parent="H05L0OicOoHxccUPVke1-10">
+          <mxGeometry x="20" y="70" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-31" value="Pass To SelectEntities" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-10">
+          <mxGeometry x="20" y="110" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="H05L0OicOoHxccUPVke1-8" target="H05L0OicOoHxccUPVke1-10">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="360" y="685" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-17" value="Start" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="650" width="270" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-18" value="StartAnchorPoint = PlayerController-&amp;gt;GetMousePosition" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-17">
+          <mxGeometry x="20" y="30" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="H05L0OicOoHxccUPVke1-7" target="H05L0OicOoHxccUPVke1-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-23" value="While" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="750" width="270" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-24" value="EndAnchorPoint = PlayerController-&amp;gt;GetMousePosition" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-23">
+          <mxGeometry x="20" y="30" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-26" value="mHUD-&amp;gt;DrawRect(StartAnchor.X, StartAnchor.Y, RectScale.X, RectScale.Y)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-23">
+          <mxGeometry x="20" y="120" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-27" value="RectScale = EndAnchor - StartAnchor" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-23">
+          <mxGeometry x="20" y="70" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="H05L0OicOoHxccUPVke1-13" target="H05L0OicOoHxccUPVke1-23">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-33" value="Request" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="1120" width="270" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-34" value="Incoming Request" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-33">
+          <mxGeometry x="20" y="30" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-35" value="Accept / Decline" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-33">
+          <mxGeometry x="20" y="70" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-36" value="Pass To SelectEntities" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-33">
+          <mxGeometry x="20" y="110" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="H05L0OicOoHxccUPVke1-32" target="H05L0OicOoHxccUPVke1-33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-38" value="Selection Request" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="1140" width="200" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-40" value="On Complete Callback" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-38">
+          <mxGeometry x="30" y="120" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-42" value="On Accept Callback" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-38">
+          <mxGeometry x="30" y="29" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-41" value="On Declined Callback" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-38">
+          <mxGeometry x="30" y="60" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-47" value="On Terminated Callback" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="H05L0OicOoHxccUPVke1-38">
+          <mxGeometry x="30" y="90" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-48" value="Selected Entitiy / Entities" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" vertex="1" parent="H05L0OicOoHxccUPVke1-38">
+          <mxGeometry x="20" y="160" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H05L0OicOoHxccUPVke1-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="H05L0OicOoHxccUPVke1-34" target="H05L0OicOoHxccUPVke1-38">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
