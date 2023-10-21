@@ -14,9 +14,4 @@ class VERGJORN_API AVergjornGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
-public:
-	AVergjornGameModeBase();
-	virtual void BeginPlay() override;
-
-	virtual void Tick(float DeltaTime) override;
 };

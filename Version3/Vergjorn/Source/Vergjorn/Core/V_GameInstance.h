@@ -10,8 +10,8 @@
  * 
  */
 
-class Vergjorn;
-
+class UV_Vergjorn;
+class V_Entity;
 UCLASS()
 class VERGJORN_API UV_GameInstance : public UGameInstance
 {
@@ -24,6 +24,10 @@ public:
 
 	virtual void Shutdown() override;
 
+	//----VERGJORN------
+	UFUNCTION(BlueprintCallable)
+		UV_Vergjorn* GetVergjorn();
+
 private:
-	Vergjorn* mVergjorn = nullptr;
+	TObjectPtr<UV_Vergjorn> mVergjorn = nullptr;
 };

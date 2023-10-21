@@ -1,21 +1,32 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "V_SaveAndLoad.h"
-#include "Misc/FileHelper.h"
-#include "JsonObjectConverter.h"
-#include <string>//For string manipulation
+#include "V_Vergjorn.h"
+#include "Vergjorn.h"
 
-V_SaveAndLoad::V_SaveAndLoad()
-{
-}
 
-V_SaveAndLoad::~V_SaveAndLoad()
+UV_Vergjorn::UV_Vergjorn()
 {
 
 }
 
-TArray<FJsonObject> V_SaveAndLoad::LoadVergjornSaves()
+void UV_Vergjorn::Init()
+{
+	GEngine->AddOnScreenDebugMessage(VERGJORN_INIT, 5, FColor::Green, FString::Printf(TEXT("Vergjorn Init")));
+
+	//LOAD VERGJORN FILES
+	mSaveFiles = LoadVergjornSaves();
+	//Get the newgame file
+	mNewGameSaveFile = LoadNewGameFile();
+}
+
+void UV_Vergjorn::Shutdown()
+{
+	GEngine->AddOnScreenDebugMessage(VERGJORN_SHUTDOWN, 5, FColor::Green, FString::Printf(TEXT("Vergjorn Shutdown")));
+}
+
+#pragma region Saving And Loading
+TArray<FJsonObject> UV_Vergjorn::LoadVergjornSaves()
 {
 	//Load all save files
 	FString file_prefix = "VergjornSave";
@@ -24,7 +35,7 @@ TArray<FJsonObject> V_SaveAndLoad::LoadVergjornSaves()
 	//Cache the loaded json objects
 	TArray<FJsonObject> loadedJsonObjects;
 	for (int file_index = 0; file_index < 100; file_index++) {
-	//----FILE PATHS-----
+		//----FILE PATHS-----
 		FString file_name = file_prefix;
 		file_name.Append("_");
 		file_name.Append(FString::FromInt(file_index));
@@ -52,10 +63,10 @@ TArray<FJsonObject> V_SaveAndLoad::LoadVergjornSaves()
 	}
 
 	//Store the save file amount
-	
+
 	return loadedJsonObjects;
 }
-bool V_SaveAndLoad::SaveVergjornFile(FJsonObject* obj)//Find the first free save slot
+bool UV_Vergjorn::SaveVergjornFile(FJsonObject* obj)//Find the first free save slot
 {
 	FString file_prefix = "VergjornSave";
 	FString file_suffix = ".verg";
@@ -88,7 +99,7 @@ bool V_SaveAndLoad::SaveVergjornFile(FJsonObject* obj)//Find the first free save
 	return SaveVergjornFile(obj, file_index);
 
 }
-bool V_SaveAndLoad::SaveVergjornFile(FJsonObject* obj, int file_index)
+bool UV_Vergjorn::SaveVergjornFile(FJsonObject* obj, int file_index)
 {
 	FString file_prefix = "VergjornSave";
 	FString file_suffix = ".verg";
@@ -109,3 +120,49 @@ bool V_SaveAndLoad::SaveVergjornFile(FJsonObject* obj, int file_index)
 	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("Saved JSON object at : %s"), *file_path));
 	return true;
 }
+
+
+TArray<FJsonObject*> UV_Vergjorn::GetSaveFiles()//Creates pointers to the json objects
+{
+	TArray<FJsonObject*> files;
+	for (int i = 0; i < mSaveFiles.Num(); i++)
+	{
+		files.Add(&mSaveFiles[i]);
+	}
+
+	return files;
+}
+
+FJsonObject UV_Vergjorn::LoadNewGameFile() {
+
+	//----FILE PATHS-----
+	FString file_name = "NewGameSave.verg";
+
+	FString file_path = FPaths::ProjectContentDir();
+	file_path.Append(file_name);
+	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Cyan, FString::Printf(TEXT("Filepath : %s"), *file_path));
+
+	FString loaded = "";
+	FFileHelper::LoadFileToString(loaded, *file_path);//Load the file to the string
+
+	//----------JSON DESERIALIZATION---------------
+	TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(loaded);//reader
+	TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);//empty object
+	bool success = FJsonSerializer::Deserialize(JsonReader, JsonObject) && JsonObject.IsValid();
+
+	if (!success) {
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::Printf(TEXT("Unsuccessful New Game Loading at : %s"), *file_path));
+		FJsonObject obj;
+		return obj;
+	}
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("Successfull Json Deserialization : %s"), *file_name));
+	return *JsonObject.Get();
+}
+		
+//Returns the New-game save file
+FJsonObject UV_Vergjorn::GetNewGameFile() {
+	return mNewGameSaveFile;
+}
+
+
+#pragma endregion

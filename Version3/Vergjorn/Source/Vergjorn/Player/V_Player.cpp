@@ -26,6 +26,9 @@ void AV_Player::BeginPlay()
 	Super::BeginPlay();
 	
 	//mFloatingPawnMovement->Activate();
+	FGuid guid = FGuid::NewGuid();
+	FString guidString = guid.ToString();
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Cyan, FString::Printf(TEXT("TEST GUID : %s"), *guidString));
 }
 
 // Called every frame
@@ -61,12 +64,26 @@ void AV_Player::MoveRight(float value)
 
 void AV_Player::Turn(float value)
 {
-	AddControllerYawInput(value * mTurnRate * GetWorld()->GetDeltaSeconds());
+	if (bCanLookAround && value != 0.0f) {
+		AddControllerYawInput(value * mTurnRate * GetWorld()->GetDeltaSeconds());
+	}
 }
 
 void AV_Player::LookUp(float value)
 {
-	AddControllerPitchInput(value * mLookUpRate * GetWorld()->GetDeltaSeconds());
+	if (bCanLookAround && value != 0.0f) {
+		AddControllerPitchInput(value * mLookUpRate * GetWorld()->GetDeltaSeconds());
+	}
+}
+
+void AV_Player::EnableRotation()
+{
+	bCanLookAround = true;
+}
+
+void AV_Player::DisableRotation()
+{
+	bCanLookAround = false;
 }
 
 #pragma endregion

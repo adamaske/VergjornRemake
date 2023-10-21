@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
 /**
  * 
  */
@@ -12,11 +11,4 @@ class VERGJORN_API V_Entity
 public:
 	V_Entity();
 	~V_Entity();
-
-
-	FGuid GetGUID();
-	void SetNewGUID(FGuid guid);
-
-private:
-	FGuid mGUID;
 };

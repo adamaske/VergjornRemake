@@ -13,12 +13,12 @@ public:
 	V_SaveAndLoad();
 	~V_SaveAndLoad();
 
-	static std::vector<FJsonObject> LoadAllVergjornSaves();
+	static TArray<FJsonObject> LoadVergjornSaves();
 	//void SaveVergjornState();
 	
 	//Save with unspecified index
-	static bool SaveVergjornFile(FJsonObject obj);
-	static bool SaveVergjornFile(FJsonObject obj, int file_index);
+	static bool SaveVergjornFile(FJsonObject* obj);
+	static bool SaveVergjornFile(FJsonObject* obj, int file_index);
 
 private:
 	int mAmoutOfSaveFiles = 0;

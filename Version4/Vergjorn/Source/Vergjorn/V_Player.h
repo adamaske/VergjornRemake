@@ -4,10 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+
+#include "InputActionValue.h"
+
 #include "V_Player.generated.h"
+
+
+class UInputMappingContext;
+class UInputComponent;
+class UInputAction;
 
 class UCameraComponent;
 class UFloatingPawnMovement;
+
 UCLASS()
 class VERGJORN_API AV_Player : public APawn
 {
@@ -29,26 +38,30 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		UCameraComponent* mCamera;
+	/** MappingContext */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+		UInputMappingContext* m_DefaultMappingContext;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+		UInputAction* m_MoveAction;
+	/** Look Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+		UInputAction* m_LookAction;
 
-#pragma region Normal Movement and Rotation
-private:
-	
-	UFloatingPawnMovement* mFloatingPawnMovement;
 	//FPS MOVEment
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-		float mMoveSpeed = 100.f;
+		float m_MoveSpeed = 100.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-		float mTurnRate = 45.f;
+		float m_TurnRate = 45.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-		float mLookUpRate = 45.f;
+		float m_LookUpRate = 45.f;
 
-	void MoveForward(float value);
-	void MoveRight(float value);
+	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
 
-	void Turn(float value);
-	void LookUp(float value);
-#pragma endregion
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		UCameraComponent* m_Camera;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+		UFloatingPawnMovement* m_FloatingPawnMovement;
 };
