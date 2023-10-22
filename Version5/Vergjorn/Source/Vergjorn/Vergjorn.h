@@ -4,10 +4,4 @@
 
 #include "CoreMinimal.h"
 
-class Vergjorn {
 
-public:
-	Vergjorn();
-
-
-};

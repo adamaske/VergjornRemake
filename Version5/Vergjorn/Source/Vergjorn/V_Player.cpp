@@ -80,7 +80,7 @@ void AV_Player::Look(const FInputActionValue& Value)
 
 	auto DeltaSeconds = GetWorld()->GetDeltaSeconds();
 
-	float X = LookAxisVector.X * m_TurnRate * DeltaSeconds;
+	float X = -LookAxisVector.X * m_TurnRate * DeltaSeconds;
 	float Y = LookAxisVector.Y * m_LookUpRate * DeltaSeconds;
 
 	AddControllerYawInput(X);

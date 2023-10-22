@@ -4,7 +4,3 @@
 #include "Modules/ModuleManager.h"
 
 IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, Vergjorn, "Vergjorn" );
-
-Vergjorn::Vergjorn()
-{
-}

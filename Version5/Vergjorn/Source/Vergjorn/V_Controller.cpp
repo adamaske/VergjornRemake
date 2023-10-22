@@ -12,6 +12,7 @@ void AV_Controller::OnPossess(APawn* pawn)
 	if (!mPlayer) {
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::Printf(TEXT("PC : Found no Player")));
 	}
+	SetInputMode(FInputModeGameAndUI());
 }
 
 void AV_Controller::BeginPlay() {
