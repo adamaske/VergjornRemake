@@ -14,6 +14,13 @@ class AV_HUD;
 class AEntitySelector;
 class AV_Player;
 
+UENUM(BlueprintType)
+enum E_V_InputType {
+	IT_KeyboardMouse UMETA(DisplayName = "KeyboardMouse"),
+	IT_Gamepad UMETA(DisplayName = "Gamepad"),
+};
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInputTypeSwitch, E_V_InputType, new_type);
 UCLASS()
 class VERGJORN_API AV_Controller : public APlayerController
 {
@@ -32,5 +39,12 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 	AV_Player* mPlayer;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess))
+	TEnumAsByte<E_V_InputType> m_InputType = E_V_InputType::IT_Gamepad;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, BlueprintCallable, BlueprintAssignable, meta = (AllowPrivateAccess))
+	FInputTypeSwitch m_InputTypeSwitched;
+public:
+	UFUNCTION(BlueprintCallable)
+	void SwitchInputMode(E_V_InputType type);
 };

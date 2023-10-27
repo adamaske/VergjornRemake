@@ -43,6 +43,6 @@ private:
 
     /** The widget instance that we are using as our menu. */
     UPROPERTY()
-    UUserWidget* CurrentWidget;
+    TObjectPtr<UUserWidget> CurrentWidget;
 
 };

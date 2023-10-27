@@ -12,24 +12,30 @@ void AV_Controller::OnPossess(APawn* pawn)
 	if (!mPlayer) {
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::Printf(TEXT("PC : Found no Player")));
 	}
-	SetInputMode(FInputModeGameAndUI());
 }
 
 void AV_Controller::BeginPlay() {
-
+	Super::BeginPlay();
 	//Set mouse
-	SetShowMouseCursor(true);
+	//SetShowMouseCursor(true);
 	//Create HUD
 
 
 }
 void AV_Controller::Tick(float DeltaTime) {
 
-
+	Super::Tick(DeltaTime);
 }
 
 void AV_Controller::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
+}
+
+void AV_Controller::SwitchInputMode(E_V_InputType type)
+{
+	m_InputType = type;
+
+	m_InputTypeSwitched.Broadcast(m_InputType);
 }
