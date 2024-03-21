@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS(DisplayName = "UI Subsystem")
+UCLASS(DisplayName = "DECAPERATED Subsystem")
 class VERGJORN_API UV_UserInterfaceSubsystem : public UGameInstanceSubsystem
 {
     GENERATED_BODY()

@@ -6,7 +6,7 @@
 
 void UV_UserInterfaceSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("UI_SS: UI Subsystem")));
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("UI_SS: DECAPERATED Subsystem")));
 
 	//Depedent on other subsystems to be already launched
 	Collection.InitializeDependency<UVergjornSubsystem>();

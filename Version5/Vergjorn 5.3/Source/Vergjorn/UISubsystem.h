@@ -4,17 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "VergjornSubsystem.generated.h"
+#include "UISubsystem.generated.h"
 
 /**
  * 
  */
-struct FVergjornSaveGame;
-
-UCLASS()
-class VERGJORN_API UVergjornSubsystem : public UGameInstanceSubsystem
+UCLASS(DisplayName = "UI Subsystem")
+class VERGJORN_API UUISubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
+	
 public:
     // Begin USubsystem
     virtual void Initialize(FSubsystemCollectionBase& Collection) override;
@@ -22,12 +21,5 @@ public:
     virtual void Deinitialize() override;
     // End USubsystem
 
-    //
-    FVergjornSaveGame GetWorldAsSaveGame();
 
-    //
-    void SetWorldAsSaveGame(FVergjornSaveGame save);
-
-private:
-    // All my variables
 };

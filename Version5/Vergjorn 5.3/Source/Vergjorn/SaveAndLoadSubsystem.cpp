@@ -12,113 +12,96 @@ void USaveAndLoadSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("SL_SS: Save And Load Subsystem")));
 
+	//Depedent on other subsystems to be already launched
+	Collection.InitializeDependency<UVergjornSubsystem>();
+
+
 }
 
 void USaveAndLoadSubsystem::Deinitialize()
 {
 }
 
-void USaveAndLoadSubsystem::Save(FVergjornSaveGame save)
+void USaveAndLoadSubsystem::Save(FVergjornSaveGame save, bool& outSuccess)
 {
 	auto obj = SaveGameToJson(save);
-	
-	FString file_path = m_SaveFolderFilePath;
-	file_path.Append(mSaveFile_Prefix);
-	file_path.Append("-");
-	file_path.Append(save.m_ClanName);
-	file_path.Append("-");
-	file_path.Append(save.m_DateTime.ToString());
-	file_path.Append(mSaveFile_Suffix);
-	
-	TSharedRef<FJsonObject> json = MakeShareable<FJsonObject>(&obj);
-	FString jsonString = "";
-	TSharedRef<TJsonWriter<>> writer = TJsonWriterFactory<>::Create(&jsonString);
-	//Put serialized json object into jsonString
-	FJsonSerializer::Serialize(json, writer);
-	
-	//Then write to file
-	FFileHelper::SaveStringToFile(jsonString, *file_path);
-	
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("Saved JSON object at : %s"), *file_path));
+	auto path = GetSaveGameFilepath(save);
+
+	bool success = false;
+	FString info = "";
+
+	WriteJson(path, obj, success, info);
+	if (!success) {
+		outSuccess = success;
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::Printf(TEXT("SL_SS : Save failed"), *info));
+		return;
+	}
+	outSuccess = true;
 }
 
-void USaveAndLoadSubsystem::Load()
+void USaveAndLoadSubsystem::Quicksave(bool& outSuccess, FString& info)
 {
-	//What does load do?
+	auto GI = GetGameInstance();
+	auto vergjorn = GI->GetSubsystem<UVergjornSubsystem>();
+	if (!vergjorn) {
+		outSuccess = false;
+		info = "No Vergjorn Subsystem!";
+		return;
+	}
 
-	//Find the desired file
+	FVergjornSaveGame save = vergjorn->GetWorldAsSaveGame();
+	Save(save, outSuccess);
+}
+void USaveAndLoadSubsystem::Load(FVergjornSaveGame save, bool& outSuccess, FString& info)
+{
+	auto GI = GetGameInstance();
+	auto vergjorn = GI->GetSubsystem<UVergjornSubsystem>();
+	if (!vergjorn) {
+		outSuccess = false;
+		info = "No Vergjorn Subsystem!";
+		return;
+	}
 
-	//Tell the vergjorn subsystem what save file is desired
-
-	//m_ActiveSave
-
+	vergjorn->SetWorldAsSaveGame(save);
 }
 
-
-void USaveAndLoadSubsystem::Quicksave()
+void USaveAndLoadSubsystem::Quickload(bool& outSuccess, FString& info)
 {
-	//Create dummy save files
-	FVergjornSaveGame save = FVergjornSaveGame("Test 0", "Adam", FDateTime::Now(), 0);
-	Save(save);
-	
-	//Save the active game file
+	SortSaveGames(m_SavesArray);
 
-	//VergjronSubsystem->GetSaveGame
+	auto toLoad = m_SavesArray[0];
 
-	//Convert to json
-
-	//Save
-
-}
-
-void USaveAndLoadSubsystem::Quickload()
-{
+	Load(toLoad, outSuccess, info);
 }
 
 int USaveAndLoadSubsystem::LoadAndCacheSaves()
 {
-	TArray<FString> fileNames;
-	FFileManagerGeneric fileManager;
-	fileManager.SetSandboxEnabled(true);// don't ask why, I don't know :P
-	FString wildcard("*.save"); // May be "" (empty string) to search all files
-	FString search_path(FPaths::Combine(m_SaveFolderFilePath, *wildcard));
+	auto files = GetFilesInSaveGameFolder();
+	auto folder = GetSaveGameFolderPath();
+	int amount = files.Num();
 
-	fileManager.FindFiles(fileNames, *search_path, true, false);
+	bool success = false;
+	FString info = "";
 
 	//Cache json objects read from file
-	TArray<FJsonObject> loadedJsonObjects; 
-	for (auto name : fileNames)
-	{
-		FString path = m_SaveFolderFilePath;
-		path.Append(name);
-		FString loaded = "";
-		FFileHelper::LoadFileToString(loaded, *path);//Load the file to the string
-
-		//----------JSON DESERIALIZATION---------------
-		TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(loaded);//reader
-		TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);//empty object
-		bool success = FJsonSerializer::Deserialize(JsonReader, JsonObject) && JsonObject.IsValid();
-
+	m_CachedJsonSaveGames.Empty();
+	for (int i = 0; i < amount; i++) {
+		auto path = FPaths::Combine(folder, files[i]);
+		auto json = ReadJson(path, success, info);
 		if (!success) {
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::Printf(TEXT("Unsuccessful Json Deserialization : %s"), *path));
 
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::Printf(TEXT("Found  : %s"), *loaded));
 			continue;
 		}
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("Successfull Json Deserialization : %s"), *name));
-
-		//Add to array
-		loadedJsonObjects.Add(*JsonObject);
+		m_CachedJsonSaveGames.Add(json);
 	}
-	fileNames.Empty();
+	files.Empty();
 
 	//Turn cached json objects to save games
 	TArray<FVergjornSaveGame> loadedSaveGames;
-	for (int i = 0; i < loadedJsonObjects.Num(); i++) {
-		auto save = JsonToSaveGame(loadedJsonObjects[i]);
+	for (int i = 0; i < m_CachedJsonSaveGames.Num(); i++) {
+		auto save = JsonToSaveGame(m_CachedJsonSaveGames[i]);
 		loadedSaveGames.Add(save);
 	}
-	loadedJsonObjects.Empty();
 
 	m_SavesArray.Empty();
 	//Add to Saves
@@ -126,11 +109,10 @@ int USaveAndLoadSubsystem::LoadAndCacheSaves()
 		m_SavesArray.Add(save);
 		m_SavesMap.Add(save.m_ID, save);
 	}
-	int amount = loadedSaveGames.Num();
 	loadedSaveGames.Empty();
 
 	SortSaveGames(m_SavesArray);
-	return amount;
+	return m_SavesArray.Num();
 }
 
 TArray<FVergjornSaveGame> USaveAndLoadSubsystem::GetSaves()
@@ -140,6 +122,9 @@ TArray<FVergjornSaveGame> USaveAndLoadSubsystem::GetSaves()
 
 void USaveAndLoadSubsystem::CreateNewGame(FVergjornSaveGame save)
 {
+	//Idk what the intended use for this function was?
+	//Maybe to populate the save file for a new game
+	//However this should be a predefined save file
 }
 
 
@@ -173,26 +158,29 @@ void USaveAndLoadSubsystem::SetActiveSaveGame(int ID)
 
 }
 
-FJsonObject USaveAndLoadSubsystem::SaveGameToJson(FVergjornSaveGame save)
+TSharedPtr<FJsonObject> USaveAndLoadSubsystem::SaveGameToJson(FVergjornSaveGame save)
 {
-	FJsonObject obj;
-	obj.SetStringField("Title", save.m_Title);
-	obj.SetStringField("ClanName", save.m_ClanName);
-	obj.SetStringField("Datetime", save.m_DateTime.ToString());
-	obj.SetNumberField("ID", save.m_ID);
-	return obj;
+	TSharedPtr<FJsonObject> json = MakeShareable<FJsonObject>(new FJsonObject);
+	auto obj = json.Get();
+	obj->SetStringField("Title", save.m_Title);
+	obj->SetStringField("ClanName", save.m_ClanName);
+	obj->SetStringField("Datetime", save.m_DateTime.ToString());
+	obj->SetNumberField("ID", save.m_ID);
+	return json;
 }
 
-FVergjornSaveGame USaveAndLoadSubsystem::JsonToSaveGame(FJsonObject object)
+FVergjornSaveGame USaveAndLoadSubsystem::JsonToSaveGame(TSharedPtr<FJsonObject> object)
 {	
+	auto json = object.Get();
+
 	FVergjornSaveGame game;
-	game.m_Title = object.GetStringField("Title");
-	game.m_ClanName = object.GetStringField("ClanName");
-	bool parsed = FDateTime::Parse(object.GetStringField("Datetime"), game.m_DateTime);
-	if (!parsed) {
+	game.m_Title = json->GetStringField("Title");
+	game.m_ClanName = json->GetStringField("ClanName");
+	if (!FDateTime::Parse(json->GetStringField("Datetime"), game.m_DateTime)) 
+	{
 		game.m_DateTime = FDateTime::Now();
 	}
-	game.m_ID = object.GetNumberField("ID");
+	game.m_ID = json->GetNumberField("ID");
 
 	return game;
 }
@@ -215,4 +203,82 @@ void USaveAndLoadSubsystem::SortSaveGames(TArray<FVergjornSaveGame>& saves)
 		if (swapped == false)
 			break;
 	}
+}
+
+FString USaveAndLoadSubsystem::GetSaveGameFilepath(FVergjornSaveGame save)
+{
+	FString filepath = m_SaveGameFolderPath;
+	filepath.Append(m_SaveFilePrefix);
+	filepath.Append("-");
+	filepath.Append(save.m_ClanName);
+	filepath.Append("-");
+	filepath.Append(save.m_DateTime.ToString());
+	filepath.Append(m_SaveFileSuffix);
+	return filepath;
+}
+
+FString USaveAndLoadSubsystem::GetSaveGameFolderPath()
+{
+	return m_SaveGameFolderPath;
+}
+
+TArray<FString> USaveAndLoadSubsystem::GetFilesInSaveGameFolder()
+{
+	TArray<FString> fileNames;//Cache the found filenames
+
+	FFileManagerGeneric fileManager;
+	fileManager.SetSandboxEnabled(true);// don't ask why, I don't know :P
+
+	FString wildcard("*");//Find every file with the suffix
+	wildcard.Append(m_SaveFileSuffix);
+
+	FString search_path(FPaths::Combine(GetSaveGameFolderPath(), *wildcard));
+	fileManager.FindFiles(fileNames, *search_path, true, false);
+
+	return fileNames;
+}
+
+TSharedPtr<FJsonObject> USaveAndLoadSubsystem::ReadJson(FString path, bool& outSuccess, FString& outMessage)
+{
+	FString loaded = "";
+	FFileHelper::LoadFileToString(loaded, *path);//Load the file to the string
+
+	//----------JSON DESERIALIZATION---------------
+	TSharedPtr<FJsonObject> json;
+	if (!FJsonSerializer::Deserialize(TJsonReaderFactory<TCHAR>::Create(loaded), json))
+	{
+		outSuccess = false;
+		outMessage = "Deserialization failed!";
+		return nullptr;
+	}
+
+	if (!json.IsValid())
+	{
+		outSuccess = false;
+		outMessage = "JsonObject invalid!";
+		return nullptr;
+	}
+	outSuccess = true;
+	return json;
+}
+
+void USaveAndLoadSubsystem::WriteJson(FString path, TSharedPtr<FJsonObject> object, bool& outSuccess, FString& outMessage)
+{
+	FString json;//Put serialized json object into jsonString
+	if (!FJsonSerializer::Serialize(object.ToSharedRef(), TJsonWriterFactory<>::Create(&json, 0))) 
+	{
+		outSuccess = false;
+		outMessage = FString::Printf(TEXT("SL_SS : Could not write Json!"));
+		return;
+	}
+
+	//Then write to file
+	if (!FFileHelper::SaveStringToFile(json, *path)) 
+	{
+		outSuccess = false;
+		outMessage = FString::Printf(TEXT("SL_SS : Could not wsave string to file!"));
+		return;
+	}
+
+	outSuccess = true;
 }

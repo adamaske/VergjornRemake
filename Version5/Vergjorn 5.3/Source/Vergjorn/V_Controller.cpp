@@ -90,14 +90,22 @@ void AV_Controller::SwitchInputMode(E_V_InputType type)
 
 void AV_Controller::Quicksave()
 {
-	auto GI = GetGameInstance();
-	auto ss = GI->GetSubsystem<USaveAndLoadSubsystem>();
-	if (ss) {
-		ss->Quicksave();
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::Printf(TEXT("PC : No SS")));
+	auto GI = GetGameInstance(); 
+	if (!GI) {
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::Printf(TEXT("PC : No GameInstance")));
+		return;
 	}
-	else {
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::Printf(TEXT("PC : No SS")));
+	auto ss = GI->GetSubsystem<USaveAndLoadSubsystem>();
+	if (!ss) {
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::Printf(TEXT("PC : No SaveAndLoad")));
+		return;
+	}
+	bool success = false;
+	FString info;
+	ss->Quicksave(success, info);
+	if (!success) {
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::Printf(TEXT("PC : Quicksave failed %s"), *info));
+		return;
 	}
 }
 
@@ -105,10 +113,18 @@ void AV_Controller::Quickload()
 {
 	auto GI = GetGameInstance();
 	auto ss = GI->GetSubsystem<USaveAndLoadSubsystem>();
-	if (ss) {
-		ss->Quickload();
-	}
-	else {
+
+	if (!ss) {
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::Printf(TEXT("PC : No SS")));
+		return;
 	}
+
+	bool success = false;
+	FString info;
+	ss->Quickload(success, info);
+	if (!success) {
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::Printf(TEXT("PC : Failed Quickload : %s"), *info));
+		return;
+	}
+	
 }

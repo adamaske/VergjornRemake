@@ -32,9 +32,6 @@ void UVergjorn_Instance::Shutdown()
 
 }
 
-
-
-
 void UVergjorn_Instance::RegisterGameMode(AVergjornGameModeBase* gm)
 {
 
@@ -60,9 +57,6 @@ void UVergjorn_Instance::LoadGame(FVergjornSaveGame save)
 
 	UGameplayStatics::OpenLevel(world, FName("M_Base"));
 }
-
-
-
 
 void UVergjorn_Instance::ExitVergjorn()
 {

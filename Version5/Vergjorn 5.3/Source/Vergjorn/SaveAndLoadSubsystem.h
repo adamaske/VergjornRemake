@@ -6,10 +6,6 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "SaveAndLoadSubsystem.generated.h"
 
-/**
- * 
- */
-
 
 USTRUCT(BlueprintType)
 struct FVergjornSaveGame {
@@ -38,6 +34,10 @@ public:
 	int m_ID = 0;
 };
 
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLoadedSaveFiles);
+
+
 UCLASS(DisplayName = "SaveAndLoad Subsystem")
 class VERGJORN_API USaveAndLoadSubsystem : public UGameInstanceSubsystem
 {
@@ -53,48 +53,68 @@ public:
 	//Load and cache all saves found in directory
 
 	//
-	UFUNCTION(BlueprintCallable, Category = UI)
-	void Save(FVergjornSaveGame save);
-
-	void Load();
-
+	UFUNCTION(BlueprintCallable, Category = SaveAndLoad)
+	void Save(FVergjornSaveGame save, bool& success);
 	//Save the current active world
-	void Quicksave();
-	//Load the latest save file
-	void Quickload();
+	UFUNCTION(BlueprintCallable, Category = SaveAndLoad)
+	void Quicksave(bool& outSuccess, FString& info);
 
-	//Cache all vergjorn saves
-	UFUNCTION(BlueprintCallable, Category = UI)
+	UFUNCTION(BlueprintCallable, Category = SaveAndLoad)
+	void Load(FVergjornSaveGame save, bool& outSuccess, FString& info);
+
+	//Load the latest save file
+	UFUNCTION(BlueprintCallable, Category = SaveAndLoad)
+	void Quickload(bool& outSuccess, FString& info);
+
+
+	//Loads all save files
+	//TODO 
+	//- Dont reload every save file everytime
+	//- GUID system for save files
+	//
+	UFUNCTION(BlueprintCallable, Category = SaveAndLoad)
 	int LoadAndCacheSaves();
 
-	UFUNCTION(BlueprintCallable, Category = UI)
+	UFUNCTION(BlueprintCallable, Category = SaveAndLoad)
 	TArray<FVergjornSaveGame> GetSaves();
 	//
-	UFUNCTION(BlueprintCallable, Category = UI)
+	UFUNCTION(BlueprintCallable, Category = SaveAndLoad)
 	void CreateNewGame(FVergjornSaveGame save);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = SaveAndLoad)
 	void SetActiveSaveGame(int ID);
 
 	//Helpers
-
-	FJsonObject SaveGameToJson(FVergjornSaveGame save);
-	FVergjornSaveGame JsonToSaveGame(FJsonObject object);
+	
+	TSharedPtr<FJsonObject> SaveGameToJson(FVergjornSaveGame save);
+	FVergjornSaveGame JsonToSaveGame(TSharedPtr<FJsonObject> object);
 
 	void SortSaveGames(TArray<FVergjornSaveGame>& saves);
+	
+	UPROPERTY(BlueprintAssignable, Category = SaveAndLoad)
+	FLoadedSaveFiles m_LoadedSaveFilesDelegate;
+
 private:
     // All my variables
 
 	TArray<FVergjornSaveGame> m_SavesArray;
 	TMap<int, FVergjornSaveGame> m_SavesMap;
 	
+	TArray<TSharedPtr<FJsonObject>> m_CachedJsonSaveGames;
+
 	int m_ActiveSaveKey = 0; 
 	FVergjornSaveGame m_ActiveSaveGame = FVergjornSaveGame{ "NewGame", "None", FDateTime::Now(), 0 };
 
+	//TODO 
+	//This should be a relative path
+	FString m_SaveGameFolderPath = "C:/Vergjorn/Saves/";
+	FString m_SaveFilePrefix = "Vergjorn";
+	FString m_SaveFileSuffix = ".save";
 
-	FString m_SaveFolderFilePath = "C:/Vergjorn/Saves/";
+	FString GetSaveGameFilepath(FVergjornSaveGame save);
+	FString GetSaveGameFolderPath();
+	TArray<FString> GetFilesInSaveGameFolder();
 
-	FString mSaveFile_Prefix = "Vergjorn";
-	FString mSaveFile_Suffix = ".save";
-
+	TSharedPtr<FJsonObject> ReadJson(FString path, bool& outSuccess, FString& outMessage);
+	void WriteJson(FString path, TSharedPtr<FJsonObject> object, bool& outSuccess, FString& outMessage);
 };
