@@ -1,10 +1,8 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 using UnrealBuildTool;
 
-public class Vergjorn : ModuleRules
+public class VergjornCore : ModuleRules
 {
-	public Vergjorn(ReadOnlyTargetRules Target) : base(Target)
+	public VergjornCore(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
@@ -13,19 +11,11 @@ public class Vergjorn : ModuleRules
 			"Core",
 			"CoreUObject",
 			"Engine",
-			"InputCore",
-			"EnhancedInput",
-			"UMG",
-			"Json",
 			"GameplayTags",
-			"VergjornCore",
-			"VergjornSim",
-			"VergjornBuild",
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[]
 		{
-			"CommonUI",
 			"GameplayMessageRuntime",
 		});
 	}

@@ -10,6 +10,6 @@ public class VergjornEditorTarget : TargetRules
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_1;
-		ExtraModuleNames.Add("Vergjorn");
+		ExtraModuleNames.AddRange(new string[] { "VergjornCore", "VergjornSim", "VergjornBuild", "Vergjorn" });
 	}
 }
