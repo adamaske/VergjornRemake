@@ -10,7 +10,7 @@ enum class EResource : uint8_t {
 };
 
 enum class EOccupation : uint8_t {
-    Idle, Lumberjack, BogWorker, Smelter,
+    Idle, Lumberjack, BogWorker, Fisher, Smelter,
     Blacksmith, Farmer, Shipwright, Viking, Hauler, Builder,
     COUNT
 };
@@ -43,6 +43,7 @@ inline const char* toString(EOccupation o) {
     case EOccupation::Idle:        return "Idle";
     case EOccupation::Lumberjack:  return "Lumberjack";
     case EOccupation::BogWorker:   return "BogWorker";
+    case EOccupation::Fisher:      return "Fisher";
     case EOccupation::Smelter:     return "Smelter";
     case EOccupation::Blacksmith:  return "Blacksmith";
     case EOccupation::Farmer:      return "Farmer";
