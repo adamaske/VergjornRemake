@@ -6,6 +6,20 @@
 #include "GameplayMessageSubsystem.h"
 #include "VergjornTags.h"
 
+// ── Placeholder tool assignment ───────────────────────────────────────────────
+// Maps each occupation to its starter tool tag and efficiency multiplier.
+// Remove this once EquipmentSubsystem handles distribution from the smithy.
+static void AssignStarterEquipment(FVillagerEquipmentFragment& Equip, FGameplayTag Occupation)
+{
+	if      (Occupation == TAG_Occupation_Lumberjack) { Equip.EquippedTool = TAG_Equipment_Tool_Axe;        Equip.WorkEfficiencyMultiplier = 1.5f; }
+	else if (Occupation == TAG_Occupation_BogWorker)  { Equip.EquippedTool = TAG_Equipment_Tool_Pickaxe;    Equip.WorkEfficiencyMultiplier = 1.5f; }
+	else if (Occupation == TAG_Occupation_Fisher)     { Equip.EquippedTool = TAG_Equipment_Tool_FishingRod; Equip.WorkEfficiencyMultiplier = 1.4f; }
+	else if (Occupation == TAG_Occupation_Farmer)     { Equip.EquippedTool = TAG_Equipment_Tool_Scythe;     Equip.WorkEfficiencyMultiplier = 1.5f; }
+	else if (Occupation == TAG_Occupation_Blacksmith ||
+	         Occupation == TAG_Occupation_Builder)    { Equip.EquippedTool = TAG_Equipment_Tool_Hammer;     Equip.WorkEfficiencyMultiplier = 1.3f; }
+	// Haulers, Vikings, etc.: no tool bonus — multiplier stays 1.0
+}
+
 DEFINE_LOG_CATEGORY(LogPopulation);
 
 void UPopulationSubsystem::Initialize(FSubsystemCollectionBase& Collection)
@@ -133,20 +147,24 @@ FMassEntityHandle UPopulationSubsystem::SpawnMassEntity(FGameplayTag SocialClass
 			FVillagerNeedsFragment::StaticStruct(),
 			FVillagerJobFragment::StaticStruct(),
 			FCarriedResourceFragment::StaticStruct(),
+			FVillagerEquipmentFragment::StaticStruct(),
 			FVillagerVisualFragment::StaticStruct(),
 		}
 	);
 
 	FMassEntityHandle Entity = EM.CreateEntity(Archetype);
 
-	// Set initial world position
+	// Position
 	EM.GetFragmentDataChecked<FTransformFragment>(Entity).SetTransform(FTransform(Location));
 
-	// Set identity
+	// Identity
 	FVillagerIdentityFragment& Identity = EM.GetFragmentDataChecked<FVillagerIdentityFragment>(Entity);
 	Identity.VillagerId  = FGuid::NewGuid();
 	Identity.SocialClass = SocialClass;
 	Identity.Occupation  = Occupation;
+
+	// Starter equipment — placeholder until EquipmentSubsystem is implemented
+	AssignStarterEquipment(EM.GetFragmentDataChecked<FVillagerEquipmentFragment>(Entity), Occupation);
 
 	return Entity;
 }

@@ -79,6 +79,29 @@ struct VERGJORNSIM_API FCarriedResourceFragment : public FMassFragment
 	int32 Amount = 0;
 };
 
+// Equipment carried / worn by this villager.
+// WorkEfficiencyMultiplier is cached from UEquipmentDefinition at assignment time
+// so the job processor never touches the Asset Manager in its hot path.
+USTRUCT()
+struct VERGJORNSIM_API FVillagerEquipmentFragment : public FMassFragment
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FGameplayTag EquippedTool;    // e.g. TAG_Equipment_Tool_Axe
+
+	UPROPERTY()
+	FGameplayTag EquippedWeapon;  // e.g. TAG_Equipment_Weapon_Sword
+
+	UPROPERTY()
+	FGameplayTag EquippedArmor;   // future
+
+	// Set by PopulationSubsystem (or EquipmentSubsystem) whenever equipment changes.
+	// Default 1.0 = bare-handed.
+	UPROPERTY()
+	float WorkEfficiencyMultiplier = 1.0f;
+};
+
 // Scene actor that renders this villager — written once at spawn, read each frame by VillagerSyncProcessor
 USTRUCT()
 struct VERGJORNSIM_API FVillagerVisualFragment : public FMassFragment

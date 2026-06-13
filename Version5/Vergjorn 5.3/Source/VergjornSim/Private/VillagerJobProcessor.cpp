@@ -16,6 +16,7 @@ void UVillagerJobProcessor::ConfigureQueries()
 {
 	EntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadOnly);
 	EntityQuery.AddRequirement<FVillagerIdentityFragment>(EMassFragmentAccess::ReadOnly);
+	EntityQuery.AddRequirement<FVillagerEquipmentFragment>(EMassFragmentAccess::ReadOnly);
 	EntityQuery.AddRequirement<FVillagerJobFragment>(EMassFragmentAccess::ReadWrite);
 	EntityQuery.RegisterWithProcessor(*this);
 }
@@ -30,9 +31,10 @@ void UVillagerJobProcessor::Execute(FMassEntityManager& EntityManager, FMassExec
 
 	EntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& ChunkCtx)
 	{
-		TConstArrayView<FTransformFragment>       Transforms = ChunkCtx.GetFragmentView<FTransformFragment>();
-		TConstArrayView<FVillagerIdentityFragment> Identities = ChunkCtx.GetFragmentView<FVillagerIdentityFragment>();
-		TArrayView<FVillagerJobFragment>           JobFrags   = ChunkCtx.GetMutableFragmentView<FVillagerJobFragment>();
+		TConstArrayView<FTransformFragment>        Transforms = ChunkCtx.GetFragmentView<FTransformFragment>();
+		TConstArrayView<FVillagerIdentityFragment>  Identities = ChunkCtx.GetFragmentView<FVillagerIdentityFragment>();
+		TConstArrayView<FVillagerEquipmentFragment> Equipment  = ChunkCtx.GetFragmentView<FVillagerEquipmentFragment>();
+		TArrayView<FVillagerJobFragment>            JobFrags   = ChunkCtx.GetMutableFragmentView<FVillagerJobFragment>();
 
 		for (int32 i = 0; i < JobFrags.Num(); ++i)
 		{
@@ -67,7 +69,8 @@ void UVillagerJobProcessor::Execute(FMassEntityManager& EntityManager, FMassExec
 			Handle.Id = JobFrag.CurrentJobId;
 
 			FGuid CompletedBy;
-			const bool bDone = Jobs->AdvanceJob(Handle, WorkUnitsPerSecond * DeltaTime, CompletedBy);
+			const float EffectiveRate = WorkUnitsPerSecond * Equipment[i].WorkEfficiencyMultiplier;
+			const bool bDone = Jobs->AdvanceJob(Handle, EffectiveRate * DeltaTime, CompletedBy);
 
 			if (bDone)
 			{

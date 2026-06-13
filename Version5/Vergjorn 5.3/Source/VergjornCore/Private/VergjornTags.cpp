@@ -19,6 +19,7 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Class_Jarl,   "Class.Jarl",   "Jarl leader un
 // Occupations
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Occupation_Lumberjack, "Occupation.Lumberjack", "Fells trees for wood")
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Occupation_BogWorker,  "Occupation.BogWorker",  "Digs bog iron")
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Occupation_Fisher,     "Occupation.Fisher",     "Fishes rivers and coastlines")
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Occupation_Smelter,    "Occupation.Smelter",    "Smelts iron ingots from ore and charcoal")
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Occupation_Blacksmith, "Occupation.Blacksmith", "Forges tools and weapons")
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Occupation_Farmer,     "Occupation.Farmer",     "Tends crops and produces grain")
@@ -26,6 +27,18 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Occupation_Shipwright, "Occupation.Shipwright
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Occupation_Viking,     "Occupation.Viking",     "Armed warrior — Karl + weapon + shield")
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Occupation_Hauler,     "Occupation.Hauler",     "Transports resources between sites")
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Occupation_Builder,    "Occupation.Builder",    "Constructs buildings")
+
+// Equipment — Tool slot
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Equipment_Tool_Axe,        "Equipment.Tool.Axe",        "Woodcutter's axe (+50% chop rate)")
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Equipment_Tool_Pickaxe,    "Equipment.Tool.Pickaxe",    "Iron pickaxe (+50% bog dig rate)")
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Equipment_Tool_FishingRod, "Equipment.Tool.FishingRod", "Fishing rod (+40% fish rate)")
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Equipment_Tool_Scythe,     "Equipment.Tool.Scythe",     "Scythe for harvesting crops (+50% farm rate)")
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Equipment_Tool_Hammer,     "Equipment.Tool.Hammer",     "Smithing/building hammer (+30% craft & build rate)")
+
+// Equipment — Weapon slot
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Equipment_Weapon_Sword,  "Equipment.Weapon.Sword",  "Viking sword — required for Viking occupation")
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Equipment_Weapon_Shield, "Equipment.Weapon.Shield", "Round shield — required for Viking occupation")
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Equipment_Weapon_Spear,  "Equipment.Weapon.Spear",  "Spear — lighter alternative to sword")
 
 // Messages
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Message_Economy_ResourceChanged,    "Message.Economy.ResourceChanged",    "Resource ledger entry changed")
