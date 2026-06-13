@@ -4,6 +4,8 @@
 #include "GameplayTagContainer.h"
 #include "VillagerFragments.generated.h"
 
+class AVergVillagerVisual;
+
 // Unique identity, social class, occupation, household
 USTRUCT()
 struct VERGJORNSIM_API FVillagerIdentityFragment : public FMassFragment
@@ -77,6 +79,16 @@ struct VERGJORNSIM_API FCarriedResourceFragment : public FMassFragment
 	int32 Amount = 0;
 };
 
+// Scene actor that renders this villager — written once at spawn, read each frame by VillagerSyncProcessor
+USTRUCT()
+struct VERGJORNSIM_API FVillagerVisualFragment : public FMassFragment
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	TObjectPtr<AVergVillagerVisual> VisualActor = nullptr;
+};
+
 // Shared config fragment — same instance shared by all villagers of the same archetype
 USTRUCT()
 struct VERGJORNSIM_API FVillagerConfigSharedFragment : public FMassSharedFragment
@@ -89,3 +101,4 @@ struct VERGJORNSIM_API FVillagerConfigSharedFragment : public FMassSharedFragmen
 	UPROPERTY()
 	float MovementSpeed = 150.f;
 };
+

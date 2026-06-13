@@ -1,9 +1,10 @@
 #include "PopulationSubsystem.h"
+#include "VergVillagerVisual.h"
+#include "VillagerFragments.h"
 #include "MassEntitySubsystem.h"
-#include "MassEntityConfigAsset.h"
+#include "MassCommonFragments.h"
 #include "GameplayMessageSubsystem.h"
 #include "VergjornTags.h"
-#include "VillagerFragments.h"
 
 DEFINE_LOG_CATEGORY(LogPopulation);
 
@@ -20,6 +21,24 @@ FGuid UPopulationSubsystem::SpawnVillager(FGameplayTag SocialClass, FGameplayTag
 	Record.SocialClass  = SocialClass;
 	Record.Occupation   = Occupation;
 	Record.EntityHandle = SpawnMassEntity(SocialClass, Occupation, Location);
+
+	// Spawn visual actor and bind it to the Mass entity
+	if (Record.EntityHandle.IsValid())
+	{
+		FActorSpawnParameters Params;
+		Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		AVergVillagerVisual* Visual = GetWorld()->SpawnActor<AVergVillagerVisual>(Location, FRotator::ZeroRotator, Params);
+		if (Visual)
+		{
+			Visual->EntityHandle = Record.EntityHandle;
+
+			if (UMassEntitySubsystem* MassES = GetWorld()->GetSubsystem<UMassEntitySubsystem>())
+			{
+				FMassEntityManager& EM = MassES->GetMutableEntityManager();
+				EM.GetFragmentDataChecked<FVillagerVisualFragment>(Record.EntityHandle).VisualActor = Visual;
+			}
+		}
+	}
 
 	Villagers.Add(Record);
 
@@ -49,6 +68,14 @@ void UPopulationSubsystem::DespawnVillager(const FGuid& VillagerId)
 		FMassEntityManager& EM = MassES->GetMutableEntityManager();
 		if (EM.IsEntityActive(Record.EntityHandle))
 		{
+			// Destroy the visual actor before removing the entity
+			FVillagerVisualFragment& VisualFrag = EM.GetFragmentDataChecked<FVillagerVisualFragment>(Record.EntityHandle);
+			if (VisualFrag.VisualActor.Get())
+			{
+				VisualFrag.VisualActor->Destroy();
+				VisualFrag.VisualActor = nullptr;
+			}
+
 			EM.DestroyEntity(Record.EntityHandle);
 		}
 	}
@@ -69,7 +96,6 @@ void UPopulationSubsystem::CheckImmigration(int32 FreeHousingSlots, float Happin
 {
 	if (FreeHousingSlots <= 0 || HappinessScore < 0.5f) return;
 
-	// Simple: spawn one immigrant Karl per available slot (capped at 2 per check)
 	const int32 ToSpawn = FMath::Min(FreeHousingSlots, 2);
 	for (int32 i = 0; i < ToSpawn; i++)
 	{
@@ -87,7 +113,8 @@ void UPopulationSubsystem::DebugSpawnVillagers(int32 Count, const FVector& Locat
 {
 	for (int32 i = 0; i < Count; i++)
 	{
-		SpawnVillager(TAG_Class_Karl, TAG_Occupation_Hauler, Location + FVector(FMath::RandRange(-500, 500), FMath::RandRange(-500, 500), 0));
+		const FVector Offset(FMath::RandRange(-500, 500), FMath::RandRange(-500, 500), 0);
+		SpawnVillager(TAG_Class_Karl, TAG_Occupation_Hauler, Location + Offset);
 	}
 	UE_LOG(LogPopulation, Log, TEXT("Debug: spawned %d villagers"), Count);
 }
@@ -99,19 +126,23 @@ FMassEntityHandle UPopulationSubsystem::SpawnMassEntity(FGameplayTag SocialClass
 
 	FMassEntityManager& EM = MassES->GetMutableEntityManager();
 
-	// Build archetype with villager fragments
 	FMassArchetypeHandle Archetype = EM.CreateArchetype(
 		TArray<const UScriptStruct*>{
+			FTransformFragment::StaticStruct(),
 			FVillagerIdentityFragment::StaticStruct(),
 			FVillagerNeedsFragment::StaticStruct(),
 			FVillagerJobFragment::StaticStruct(),
 			FCarriedResourceFragment::StaticStruct(),
+			FVillagerVisualFragment::StaticStruct(),
 		}
 	);
 
 	FMassEntityHandle Entity = EM.CreateEntity(Archetype);
 
-	// Initialize identity fragment
+	// Set initial world position
+	EM.GetFragmentDataChecked<FTransformFragment>(Entity).SetTransform(FTransform(Location));
+
+	// Set identity
 	FVillagerIdentityFragment& Identity = EM.GetFragmentDataChecked<FVillagerIdentityFragment>(Entity);
 	Identity.VillagerId  = FGuid::NewGuid();
 	Identity.SocialClass = SocialClass;
