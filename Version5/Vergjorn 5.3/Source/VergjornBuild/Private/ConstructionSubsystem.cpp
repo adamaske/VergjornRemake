@@ -1,6 +1,7 @@
 #include "ConstructionSubsystem.h"
 #include "BuildingDefinition.h"
 #include "GameplayMessageSubsystem.h"
+#include "JobSubsystem.h"
 #include "VergjornTags.h"
 
 DEFINE_LOG_CATEGORY(LogConstruction);
@@ -10,6 +11,60 @@ void UConstructionSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	Super::Initialize(Collection);
 	Collection.InitializeDependency<UEconomySubsystem>();
 	Collection.InitializeDependency<UJobSubsystem>();
+
+	// React to job completions via message instead of direct calls from processors
+	if (UGameplayMessageSubsystem* MsgSys = UGameplayMessageSubsystem::GetIfValid(this))
+	{
+		JobCompletedHandle = MsgSys->RegisterListener<FJobCompletedMessage>(
+			TAG_Message_Job_Completed,
+			this,
+			&UConstructionSubsystem::OnJobCompletedMessage
+		);
+	}
+}
+
+void UConstructionSubsystem::Deinitialize()
+{
+	if (UGameplayMessageSubsystem* MsgSys = UGameplayMessageSubsystem::GetIfValid(this))
+	{
+		MsgSys->UnregisterListener(JobCompletedHandle);
+	}
+	Super::Deinitialize();
+}
+
+void UConstructionSubsystem::OnJobCompletedMessage(FGameplayTag Channel, const FJobCompletedMessage& Msg)
+{
+	UJobSubsystem* Jobs = GetWorld()->GetSubsystem<UJobSubsystem>();
+	if (!Jobs) return;
+
+	const FJobRecord* Record = Jobs->GetJob(Msg.Handle);
+	if (!Record) return;
+
+	if (Record->JobType == TAG_Job_Haul)
+	{
+		// Find which site this haul job belongs to by matching the reservation handle
+		for (auto& [Id, Site] : Sites)
+		{
+			bool bFound = false;
+			for (auto& [Resource, Reservation] : Site.MaterialReservations)
+			{
+				if (Reservation.Id == Msg.Handle.Id)
+				{
+					OnHaulJobCompleted(Id, Resource, Reservation.Amount);
+					bFound = true;
+					break;
+				}
+			}
+			if (bFound) break;
+		}
+	}
+	else if (Record->JobType == TAG_Job_Build)
+	{
+		if (AVergBuilding* Building = Cast<AVergBuilding>(Record->TargetActor.Get()))
+		{
+			OnBuildJobCompleted(Building->GetBuildingId(), Record->WorkUnitsDone);
+		}
+	}
 }
 
 FIntPoint UConstructionSubsystem::WorldToGrid(const FVector& WorldPos) const
@@ -139,12 +194,12 @@ void UConstructionSubsystem::PostHaulJobs(FConstructionSite& Site)
 	for (auto& [Resource, Reservation] : Site.MaterialReservations)
 	{
 		FJobRecord Job;
-		Job.JobType              = TAG_Job_Haul;
-		Job.RequiredOccupation   = FGameplayTag();  // any villager can haul
-		Job.Location             = Loc;
-		Job.Priority             = 10;
-		Job.WorkUnitsRequired    = 5.f;
-		Job.LinkedReservation    = Reservation;
+		Job.JobType            = TAG_Job_Haul;
+		Job.RequiredOccupation = FGameplayTag();  // any villager can haul
+		Job.Location           = Loc;
+		Job.Priority           = 10;
+		Job.WorkUnitsRequired  = 5.f;
+		Job.LinkedReservation  = Reservation;
 		Site.ActiveJobs.Add(Jobs->PostJob(Job));
 	}
 }

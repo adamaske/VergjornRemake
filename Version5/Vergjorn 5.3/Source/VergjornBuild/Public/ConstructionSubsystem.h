@@ -3,6 +3,7 @@
 #include "Subsystems/WorldSubsystem.h"
 #include "GameplayTagContainer.h"
 #include "EconomySubsystem.h"
+#include "GameplayMessageSubsystem.h"
 #include "JobSubsystem.h"
 #include "VergBuilding.h"
 #include "ConstructionSubsystem.generated.h"
@@ -50,6 +51,7 @@ class VERGJORNBUILD_API UConstructionSubsystem : public UWorldSubsystem
 	GENERATED_BODY()
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Deinitialize() override;
 
 	static constexpr float CellSize = 200.f;  // 200 UU ≈ 2 m
 
@@ -77,6 +79,8 @@ private:
 	TMap<int32, FConstructionSite> Sites;
 	int32 NextBuildingId = 1;
 
+	FGameplayMessageListenerHandle JobCompletedHandle;
+
 	void OccupyCells(const FIntPoint& Origin, const FIntPoint& Footprint, int32 BuildingId);
 	void FreeCells(const FIntPoint& Origin, const FIntPoint& Footprint);
 
@@ -86,4 +90,6 @@ private:
 
 	void PostHaulJobs(FConstructionSite& Site);
 	void PostBuildJobs(FConstructionSite& Site);
+
+	void OnJobCompletedMessage(FGameplayTag Channel, const FJobCompletedMessage& Msg);
 };
