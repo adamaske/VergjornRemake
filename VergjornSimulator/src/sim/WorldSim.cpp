@@ -52,7 +52,8 @@ void WorldSim::initialize(int numVillagers, int numTrees, float worldRadius) {
         spawnVillager(EOccupation::Lumberjack, ESocialClass::Karl, pos);
     }
 
-    // Scatter trees
+    // Scatter trees — reserve first so push_back never reallocates while we hold &tree
+    trees_.reserve(numTrees);
     for (int i = 0; i < numTrees; ++i) {
         Vec2 pos { posDist(rng_), posDist(rng_) };
         auto& tree = spawnTree(pos);
