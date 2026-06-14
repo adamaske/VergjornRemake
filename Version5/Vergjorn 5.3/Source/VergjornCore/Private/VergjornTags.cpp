@@ -70,3 +70,15 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Season_Spring, "Season.Spring", "Spring seaso
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Season_Summer, "Season.Summer", "Summer season")
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Season_Autumn, "Season.Autumn", "Autumn season")
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Season_Winter, "Season.Winter", "Winter season")
+
+// Narrative event IDs
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Narrative_Event_Intro,           "Narrative.Event.Intro",           "Opening monologue when the player first starts")
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Narrative_Event_FirstTree,       "Narrative.Event.FirstTree",       "Advisor comment when first tree is chopped")
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Narrative_Event_FirstBuilding,   "Narrative.Event.FirstBuilding",   "Advisor comment when first building completes")
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Narrative_Event_FirstWinter,     "Narrative.Event.FirstWinter",     "Warning at the onset of the first winter")
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Narrative_Event_FirstRaid,       "Narrative.Event.FirstRaid",       "Announcement when enemies are spotted for the first time")
+
+// Narrative progression flags
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Narrative_Flag_IntroSeen,    "Narrative.Flag.IntroSeen",    "Intro event has been acknowledged by the player")
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Narrative_Flag_HasShelter,   "Narrative.Flag.HasShelter",   "At least one house has been built")
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Narrative_Flag_WinterWarned, "Narrative.Flag.WinterWarned", "Player has received the first-winter warning")

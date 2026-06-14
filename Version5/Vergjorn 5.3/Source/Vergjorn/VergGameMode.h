@@ -5,6 +5,8 @@
 
 class UTimeSubsystem;
 class UPopulationSubsystem;
+class UNarrativeSubsystem;
+class UVergDialogWidget;
 
 UCLASS()
 class VERGJORN_API AVergGameMode : public AGameModeBase
@@ -19,7 +21,13 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Vergjorn|Spawn")
 	int32 StartingVillagerCount = 3;
 
+	// Set this to a Blueprint child of UVergDialogWidget in your GameMode Blueprint
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Vergjorn|Narrative")
+	TSubclassOf<UVergDialogWidget> DialogWidgetClass;
+
 private:
-	UPROPERTY() TObjectPtr<UTimeSubsystem>     TimeSubsystem;
-	UPROPERTY() TObjectPtr<UPopulationSubsystem> PopulationSubsystem;
+	UPROPERTY() TObjectPtr<UTimeSubsystem>       TimeSubsystem;
+	UPROPERTY() TObjectPtr<UPopulationSubsystem>  PopulationSubsystem;
+	UPROPERTY() TObjectPtr<UNarrativeSubsystem>   NarrativeSubsystem;
+	UPROPERTY() TObjectPtr<UVergDialogWidget>      DialogWidget;
 };

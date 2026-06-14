@@ -1,8 +1,11 @@
 #include "VergGameMode.h"
 #include "TimeSubsystem.h"
 #include "PopulationSubsystem.h"
+#include "NarrativeSubsystem.h"
+#include "UI/VergDialogWidget.h"
 #include "VergjornTags.h"
 #include "VergRTSCamera.h"
+#include "Blueprint/UserWidget.h"
 
 AVergGameMode::AVergGameMode()
 {
@@ -14,8 +17,27 @@ void AVergGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	TimeSubsystem      = GetWorld()->GetSubsystem<UTimeSubsystem>();
+	TimeSubsystem       = GetWorld()->GetSubsystem<UTimeSubsystem>();
 	PopulationSubsystem = GetWorld()->GetSubsystem<UPopulationSubsystem>();
+	NarrativeSubsystem  = GetWorld()->GetSubsystem<UNarrativeSubsystem>();
+
+	// Create and add the dialog widget if a class was assigned
+	if (DialogWidgetClass)
+	{
+		APlayerController* PC = GetWorld()->GetFirstPlayerController();
+		if (PC)
+		{
+			DialogWidget = CreateWidget<UVergDialogWidget>(PC, DialogWidgetClass);
+			if (DialogWidget)
+				DialogWidget->AddToViewport(100);  // high Z-order so it draws above HUD
+		}
+	}
+
+	// Fire the opening narrative event on the next frame so all subsystems are ready
+	if (NarrativeSubsystem)
+	{
+		NarrativeSubsystem->TriggerEvent(TAG_Narrative_Event_Intro);
+	}
 
 	// Spawn the starting villagers spread around the origin
 	if (PopulationSubsystem)

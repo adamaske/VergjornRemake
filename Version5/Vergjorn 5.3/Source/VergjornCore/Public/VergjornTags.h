@@ -71,3 +71,15 @@ UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Season_Spring)
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Season_Summer)
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Season_Autumn)
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Season_Winter)
+
+// Narrative — event IDs used as stable save-game keys
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Narrative_Event_Intro)
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Narrative_Event_FirstTree)
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Narrative_Event_FirstBuilding)
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Narrative_Event_FirstWinter)
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Narrative_Event_FirstRaid)
+
+// Narrative — progression flags set/cleared by event consequences
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Narrative_Flag_IntroSeen)
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Narrative_Flag_HasShelter)
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Narrative_Flag_WinterWarned)
